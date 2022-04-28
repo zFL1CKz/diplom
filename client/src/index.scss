@@ -1,0 +1,74 @@
+@import url('./fonts/worksans.css');
+@import url('./fonts/opensans.css');
+
+.container {
+  width: 100%;
+  padding: 0 20px 20px;
+  margin: 0 auto;
+}
+
+html,
+body {
+  font-family: 'Open Sans';
+  font-size: inherit;
+  background: #f4f1f2;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+body.body--block {
+  overflow-y: hidden;
+}
+.header {
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0;
+}
+.header__img--logo {
+  margin: 20px auto;
+}
+
+.swal-text {
+  font-family: inherit;
+}
+button.swal-button {
+  font-family: inherit;
+  background-color: #f98a8a !important;
+  box-shadow: -4px -4px 5px #ffffff, 4px 4px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  padding: 10px 20px;
+}
+button.swal-button--confirm {
+  background-color: #f98a8a;
+}
+@media (max-width: 500px) {
+  .swal-modal {
+    width: calc(100% - 40px);
+  }
+  .swal-icon--error__line {
+    background: #f98a8a;
+  }
+  .swal-icon--error {
+    border-color: #f98a8a;
+  }
+  .swal-button:focus {
+    box-shadow: none;
+  }
+  .swal-icon--success__ring {
+    border-color: rgba(36, 202, 73, 0.15);
+  }
+  .swal-icon--success__line {
+    background-color: rgba(36, 202, 73, 0.5);
+  }
+  .swal-button:not([disabled]):hover {
+    background: linear-gradient(
+      133.34deg,
+      rgba(78, 244, 115, 0.7) 2.4%,
+      rgba(0, 166, 37, 0.7) 91.47%
+    ) !important;
+  }
+}

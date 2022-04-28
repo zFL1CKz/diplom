@@ -1,0 +1,140 @@
+.faq--modal {
+  background: #f4f1f2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 100%;
+  display: none;
+  padding: 20px;
+  height: fit-content;
+  pointer-events: none;
+  background: #f4f1f2;
+  box-shadow: -5px 5px 10px rgba(220, 217, 218, 0.2),
+    5px -5px 10px rgba(220, 217, 218, 0.2),
+    -5px -5px 10px rgba(255, 255, 255, 0.9),
+    5px 5px 13px rgba(220, 217, 218, 0.9),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3),
+    inset -1px -1px 2px rgba(220, 217, 218, 0.5);
+  border-radius: 20px;
+  transition: all 0.2s linear;
+
+  &.active {
+    display: block;
+    pointer-events: all;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 90;
+    text-align: left;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #666592;
+
+    &_img {
+      width: 50%;
+      margin: 0 auto 40px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul li {
+      list-style: disc;
+    }
+
+    &_video {
+      position: relative;
+      z-index: 90;
+      width: 100%;
+
+      &--icon {
+        position: absolute;
+        z-index: 92;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      & iframe {
+        border-radius: 20px;
+        margin: 20px 0;
+        position: relative;
+        z-index: 89;
+      }
+    }
+
+    &_block {
+      margin-bottom: 20px;
+    }
+
+    &_title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    ul {
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    ul li {
+      position: relative;
+      margin-left: 20px;
+    }
+  }
+
+  &__important {
+    background: #f4f1f2;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3),
+      -1px -1px 2px rgba(220, 217, 218, 0.5),
+      inset -4px 4px 8px rgba(220, 217, 218, 0.2),
+      inset 4px -4px 8px rgba(220, 217, 218, 0.2),
+      inset -4px -4px 8px rgba(255, 255, 255, 0.9),
+      inset 4px 4px 10px rgba(220, 217, 218, 0.9);
+    border-radius: 20px;
+    font-family: inherit;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+
+    &_title {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 14px;
+      text-align: center;
+      text-transform: uppercase;
+      color: #f98a8a;
+      margin-bottom: 15px;
+    }
+
+    &_text {
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 13px;
+      text-align: center;
+
+      color: #aaa9c9;
+    }
+  }
+
+  &__group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  &__title {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    margin-left: 15px;
+    color: rgba(36, 202, 73, 0.7);
+  }
+}

@@ -1,0 +1,124 @@
+.modal {
+  background: #f4f1f2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  height: fit-content;
+  pointer-events: none;
+  transition: all 0.2s linear;
+
+  &.active {
+    display: block;
+    pointer-events: all;
+  }
+
+  &__content {
+    padding: 18px;
+    background: #f4f1f2;
+    box-shadow: -5px 5px 10px rgba(220, 217, 218, 0.2),
+      5px -5px 10px rgba(220, 217, 218, 0.2),
+      -5px -5px 10px rgba(255, 255, 255, 0.9),
+      5px 5px 13px rgba(220, 217, 218, 0.9),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.3),
+      inset -1px -1px 2px rgba(220, 217, 218, 0.5);
+    border-radius: 20px;
+    transition: all 0.2s linear;
+    width: auto;
+    position: relative;
+    z-index: 90;
+    text-align: left;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+
+    & .modal__group .back img {
+      margin: 0;
+    }
+  }
+
+  &__group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 15px;
+    color: rgba(36, 202, 73, 0.7);
+  }
+
+  &__img {
+    width: 100%;
+    border-radius: 20px;
+
+    img {
+      width: 100%;
+
+      margin: 0;
+      margin-bottom: 20px;
+    }
+  }
+  &__desc {
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+  &__moto_group {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+
+    & img {
+      margin: 0 !important;
+    }
+  }
+  &__moto_title {
+    font-family: 'Work Sans';
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  &__moto_class {
+    font-size: 12px;
+    font-family: 'Open Sans';
+    font-weight: 500;
+  }
+  &__moto {
+    width: 150px;
+    height: 100px;
+  }
+  &__moto_img {
+    margin: 0 !important;
+  }
+
+  &__overlay {
+    background: rgba(244, 241, 242, 0.9);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 89;
+  }
+
+  &--moto {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    width: 90vw;
+  }
+}

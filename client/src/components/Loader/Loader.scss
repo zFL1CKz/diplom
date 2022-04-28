@@ -1,0 +1,38 @@
+.loader__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+
+  & .loader__image {
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(36, 202, 73, 0.4);
+    border-radius: 50%;
+    border-top-color: #24ca49;
+    animation: loader 1.5s linear infinite;
+  }
+
+  @keyframes loader {
+    50% {
+      transform: rotate(60deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  & .loader__text {
+    margin-top: 20px;
+    font-family: inherit;
+    font-size: 18px;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+}

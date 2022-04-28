@@ -1,0 +1,35 @@
+export const MainPage = () => {
+  const { token } = useContext(AuthContext)
+  const [moto, setMoto] = useState([])
+  const { request } = useHttp()
+  const getMoto = useCallback(async () => {
+    try {
+      const data = await request('/api/motos', 'GET', null, {
+        Authorization: `Bearer ${token}`,
+      })
+      setMoto(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [token, request, moto])
+
+  useEffect(() => {
+    getMoto()
+  }, [getMoto])
+
+  return (
+    <>
+      {moto.map((item) => {
+        return (
+          <>
+            <p>Название: {item.name}</p>
+            <p>Класс: {item.class}</p>
+            <p>
+              Изображение: <img src={item.image} alt='мото' />
+            </p>
+          </>
+        )
+      })}
+    </>
+  )
+}

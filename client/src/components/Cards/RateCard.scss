@@ -1,0 +1,91 @@
+.rate {
+  &__item {
+    background: #f4f1f2;
+    box-shadow: -4px 4px 8px rgba(220, 217, 218, 0.2),
+      4px -4px 8px rgba(220, 217, 218, 0.2),
+      -4px -4px 8px rgba(255, 255, 255, 0.9),
+      4px 4px 10px rgba(220, 217, 218, 0.9),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.3),
+      inset -1px -1px 2px rgba(220, 217, 218, 0.5);
+    border-radius: 20px;
+    font-family: inherit;
+    padding: 15px 55px 20px 15px;
+    margin-bottom: 20px;
+    transition: all 0.2s linear;
+
+    &:hover {
+      background: #f4f1f2;
+      box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3),
+        -1px -1px 2px rgba(220, 217, 218, 0.5),
+        inset -5px 5px 10px rgba(220, 217, 218, 0.2),
+        inset 5px -5px 10px rgba(220, 217, 218, 0.2),
+        inset -5px -5px 10px rgba(255, 255, 255, 0.9),
+        inset 5px 5px 13px rgba(220, 217, 218, 0.9);
+    }
+  }
+
+  &__group {
+    display: flex;
+    // padding-top: 5px;
+  }
+
+  &__title {
+    font-family: 'Open Sans';
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    margin-right: 10px;
+    line-height: 35px;
+
+    background: rgba(102, 101, 146, 0.7);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: rgba(255, 255, 255, 0.5) 0px 4px 4px;
+  }
+
+  &__discount {
+    color: #f98a8a;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  &__img {
+    background: linear-gradient(135deg, #fffdfe 0%, #e8e5e6 100%);
+    box-shadow: -2px 2px 4px rgba(220, 217, 218, 0.2),
+      2px -2px 4px rgba(220, 217, 218, 0.2),
+      -2px -2px 4px rgba(255, 255, 255, 0.9),
+      2px 2px 5px rgba(220, 217, 218, 0.9),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.3),
+      inset -1px -1px 2px rgba(220, 217, 218, 0.5);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    padding: 10px;
+
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__price {
+    font-size: 12px;
+    color: #666592;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__desc {
+    font-size: 10px;
+    font-weight: 500;
+    color: #aaa9c9;
+    line-height: 10px;
+  }
+}
