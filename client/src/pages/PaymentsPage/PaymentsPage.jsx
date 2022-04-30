@@ -17,6 +17,7 @@ import nfc from '../../img/icons/nfc.svg'
 import eye from '../../img/icons/eye.svg'
 import './PaymentsPage.scss'
 import { TicketCard } from '../../components/Cards/TicketCard'
+import { HistoryPage } from '../HistoryPage/HistoryPage'
 
 export const PaymentsPage = () => {
   document.title = 'Moto Soul | Платежи'
@@ -205,6 +206,7 @@ export const PaymentsPage = () => {
                   onChange={changeHandler}
                   className='payments__input'
                   placeholder='Номер карты'
+                  autoComplete='cc-number'
                   id='number'
                 />
                 <div className='payments__inputs_group'>
@@ -215,6 +217,7 @@ export const PaymentsPage = () => {
                     onChange={changeHandler}
                     className='payments__input'
                     placeholder='Дата'
+                    autoComplete='cc-exp'
                     id='date'
                   />
                   <InputMask
@@ -224,6 +227,7 @@ export const PaymentsPage = () => {
                     onChange={changeHandler}
                     className='payments__input'
                     placeholder='Код'
+                    autoComplete='cc-csc'
                     id='cvv'
                   />
                 </div>
@@ -238,6 +242,9 @@ export const PaymentsPage = () => {
               <TicketCard item={item} key={index} />
             ))}
           </div> */}
+
+          <div className='payments__title'>История поездок</div>
+          <HistoryPage />
         </div>
       </div>
     )

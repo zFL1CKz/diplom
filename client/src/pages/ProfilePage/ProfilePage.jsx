@@ -1,5 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
+import axios from 'axios'
+import cheerio from 'cheerio'
 
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
@@ -388,10 +390,7 @@ export const ProfilePage = () => {
                   pathname: '/payments',
                   state: info,
                 }}
-                className='profile__btn mb10'>
-                Платежи
-              </Link>
-              <Link to='/history' className='profile__btn'>
+                className='profile__btn'>
                 История поездок
               </Link>
             </div>

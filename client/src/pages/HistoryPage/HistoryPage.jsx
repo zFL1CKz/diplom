@@ -43,15 +43,6 @@ export const HistoryPage = () => {
     return (
       <div>
         <div className='container'>
-          <div className='header'>
-            <div onClick={() => history.goBack()}>
-              <Back />
-            </div>
-            <div className='body__title' style={{ margin: '0 auto' }}>
-              История поездок
-            </div>
-            <img src={logo} alt='logo' />
-          </div>
           {races.length > 0 ? (
             <div className='races'>
               {races.map((item, index) => (
@@ -59,7 +50,9 @@ export const HistoryPage = () => {
               ))}
             </div>
           ) : (
-            <div className='races--else'>Райдер, у тебя ещё не было ни одной поездки</div>
+            <div className='races--else'>
+              У тебя ещё не было ни одной поездки
+            </div>
           )}
         </div>
       </div>

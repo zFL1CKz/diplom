@@ -296,6 +296,7 @@ export const MainPage = () => {
               </div>
             ) : (
               <div>
+                <div className='search--error'>Ничего не найдено</div>
                 {motos.map((item, index) => {
                   return (
                     <div key={index}>
@@ -732,22 +733,34 @@ export const MainPage = () => {
                 )}
               </div>
             ) : (
-              <div className='trip--else'>
-                Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку{' '}
-                <span>"Новая поездка"</span>, чтобы погрузиться в мир драйва!
-              </div>
-            )}
-
-            {location.state === undefined && (
               <>
-                {Object.keys(card).length > 0 ? (
-                  <Link to='/newtrip' className='link new green'>
-                    Новая поездка
-                  </Link>
-                ) : (
-                  <div style={{ marginTop: '20px' }} className='timeError'>
-                    Чтобы начать поездку необходимо привязать карту
-                  </div>
+                {location.state === undefined && (
+                  <>
+                    {Object.keys(card).length > 0 ? (
+                      <>
+                        <div className='trip--else'>
+                          Райдер, у тебя ещё не было ни одной поездки! Нажми
+                          кнопку <span>"Новая поездка"</span>, чтобы погрузиться
+                          в мир драйва!
+                        </div>
+                        <Link to='/newtrip' className='link new green'>
+                          Новая поездка
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <div className='timeError' style={{ marginTop: '0' }}>
+                          Чтобы начать поездку необходимо привязать карту
+                        </div>
+                        <Link
+                          to='/payments'
+                          style={{ marginTop: '20px' }}
+                          className='link new green'>
+                          Привязать карту
+                        </Link>
+                      </>
+                    )}
+                  </>
                 )}
               </>
             )}

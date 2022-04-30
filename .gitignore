@@ -15,6 +15,7 @@
 /node_modules
 /client/src/img/videos
 /client/src/img/motos
+/vscode
 
 # misc
 .DS_Store

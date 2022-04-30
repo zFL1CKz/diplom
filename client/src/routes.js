@@ -6,7 +6,6 @@ import { RegResult } from './pages/AuthPage/RegResult'
 import { MainPage } from './pages/MainPage/MainPage'
 import { NewTrip } from './pages/NewTrip/NewTrip'
 import { ProfilePage } from './pages/ProfilePage/ProfilePage'
-import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 import { PaymentsPage } from './pages/PaymentsPage/PaymentsPage'
 
 export const useRoutes = (isAuth) => {
@@ -21,9 +20,6 @@ export const useRoutes = (isAuth) => {
         </Route>
         <Route path='/newtrip' exact>
           <NewTrip />
-        </Route>
-        <Route path='/history' exact>
-          <HistoryPage />
         </Route>
         <Route path='/payments' exact>
           <PaymentsPage />

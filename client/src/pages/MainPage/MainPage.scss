@@ -546,11 +546,20 @@
 }
 .timeError {
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   margin: 10px 0 0;
   color: #f98a8a;
 }
 .search {
   width: 100%;
+}
+.search--error {
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+
+  color: #666592;
+  text-align: center;
+  margin-bottom: 20px;
 }
