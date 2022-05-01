@@ -256,7 +256,9 @@ export const NewTrip = () => {
     else if (motoClass === 'Эндуро') return ['Лес', 'Бездорожье']
     else if (motoClass === 'Скутер') {
       if (cat === undefined) {
-        setShowError('Для езды по городу необходимо ввести ВУ')
+        setShowError(
+          'Для езды по городу необходимо иметь соответствующую категорию прав'
+        )
         setShowCard(true)
         return null
       } else {
@@ -295,7 +297,9 @@ export const NewTrip = () => {
           }
         }
       } else {
-        setShowError('Для езды по городу необходимо ввести ВУ')
+        setShowError(
+          'Для езды по городу необходимо иметь соответствующую категорию прав'
+        )
         setShowCard(true)
         return ['Кольцевой автодром']
       }
@@ -322,7 +326,9 @@ export const NewTrip = () => {
           }
         }
       } else {
-        setShowError('Для езды по городу и загороду необходимо ввести ВУ')
+        setShowError(
+          'Для езды по городу и загороду необходимо иметь соответствующую категорию прав'
+        )
         setShowCard(true)
         return null
       }
@@ -347,7 +353,9 @@ export const NewTrip = () => {
           }
         }
       } else {
-        setShowError('Для езды по городу необходимо ввести ВУ')
+        setShowError(
+          'Для езды по городу необходимо иметь соответствующую категорию прав'
+        )
         setShowCard(true)
         return ['Кольцевой автодром']
       }
@@ -375,7 +383,9 @@ export const NewTrip = () => {
           }
         }
       } else {
-        setShowError('Для езды по городу и загороду необходимо ввести ВУ')
+        setShowError(
+          'Для езды по городу и загороду необходимо иметь соответствующую категорию прав'
+        )
         setShowCard(true)
         return ['Кольцевой автодром']
       }

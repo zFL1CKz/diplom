@@ -56,6 +56,18 @@ export const MainPage = () => {
     minute: 'numeric',
   }
 
+  if (location.state !== undefined) {
+  }
+  localStorage.setItem(
+    'race',
+    JSON.stringify(location.state)
+  )(
+    (function checkLocalStorage() {
+      if (JSON.parse(localStorage.getItem('race')) !== null)
+        location.state = JSON.parse(localStorage.getItem('race'))
+    })()
+  )
+
   const searchHandler = (value) => {
     setSearchInput(value)
   }
@@ -328,9 +340,7 @@ export const MainPage = () => {
                 <img src={logo} alt='logo' />
               </div>
             )}
-
             <FAQ />
-
             {Object.keys(lastRace).length > 0 ||
             location.state !== undefined ? (
               <div>
@@ -434,7 +444,9 @@ export const MainPage = () => {
                           </div>
                           <div>
                             {location.state !== undefined ? (
-                              <div className='rate__title'>
+                              <div
+                                className='rate__title'
+                                style={{ margin: '0' }}>
                                 {location.state[3].name}
                               </div>
                             ) : (
@@ -731,35 +743,40 @@ export const MainPage = () => {
                     </div>
                   </div>
                 )}
+
+                {location.state === undefined && (
+                  <Link
+                    to='/newtrip'
+                    className='link new green'
+                    style={{ marginTop: '20px' }}>
+                    Новая поездка
+                  </Link>
+                )}
               </div>
             ) : (
               <>
-                {location.state === undefined && (
+                {Object.keys(card).length > 0 ? (
                   <>
-                    {Object.keys(card).length > 0 ? (
-                      <>
-                        <div className='trip--else'>
-                          Райдер, у тебя ещё не было ни одной поездки! Нажми
-                          кнопку <span>"Новая поездка"</span>, чтобы погрузиться
-                          в мир драйва!
-                        </div>
-                        <Link to='/newtrip' className='link new green'>
-                          Новая поездка
-                        </Link>
-                      </>
-                    ) : (
-                      <>
-                        <div className='timeError' style={{ marginTop: '0' }}>
-                          Чтобы начать поездку необходимо привязать карту
-                        </div>
-                        <Link
-                          to='/payments'
-                          style={{ marginTop: '20px' }}
-                          className='link new green'>
-                          Привязать карту
-                        </Link>
-                      </>
-                    )}
+                    <div className='trip--else'>
+                      Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку{' '}
+                      <span>"Новая поездка"</span>, чтобы погрузиться в мир
+                      драйва!
+                    </div>
+                    <Link to='/newtrip' className='link new green'>
+                      Новая поездка
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <div className='timeError' style={{ marginTop: '0' }}>
+                      Чтобы начать поездку необходимо привязать карту
+                    </div>
+                    <Link
+                      to='/payments'
+                      style={{ marginTop: '20px' }}
+                      className='link new green'>
+                      Привязать карту
+                    </Link>
                   </>
                 )}
               </>
