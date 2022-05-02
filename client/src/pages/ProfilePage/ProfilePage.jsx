@@ -280,6 +280,7 @@ export const ProfilePage = () => {
                   className='profile__input center mb20'
                   placeholder='Введите ФИО'
                   name='fio'
+                  value={info.fio}
                   onChange={changeHandler}
                 />
               )}
@@ -316,6 +317,7 @@ export const ProfilePage = () => {
                       className='profile__input center mb20'
                       placeholder='Дата выдачи ВУ'
                       disabled={inputDisabled}
+                      value={info.date}
                     />
                     <InputMask
                       mask='9999 999999'
@@ -324,6 +326,7 @@ export const ProfilePage = () => {
                       className='profile__input center'
                       placeholder='Серия и номер ВУ'
                       disabled={inputDisabled}
+                      value={info.num}
                     />
                   </div>
                 </div>

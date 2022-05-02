@@ -56,18 +56,6 @@ export const MainPage = () => {
     minute: 'numeric',
   }
 
-  if (location.state !== undefined) {
-  }
-  localStorage.setItem(
-    'race',
-    JSON.stringify(location.state)
-  )(
-    (function checkLocalStorage() {
-      if (JSON.parse(localStorage.getItem('race')) !== null)
-        location.state = JSON.parse(localStorage.getItem('race'))
-    })()
-  )
-
   const searchHandler = (value) => {
     setSearchInput(value)
   }

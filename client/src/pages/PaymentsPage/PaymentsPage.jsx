@@ -144,7 +144,7 @@ export const PaymentsPage = () => {
   } else {
     return (
       <div>
-        <div className='container'>
+        <div className='container' style={{ paddingBottom: '0' }}>
           <div className='header'>
             <div onClick={() => history.goBack()}>
               <Back />
@@ -244,8 +244,8 @@ export const PaymentsPage = () => {
           </div> */}
 
           <div className='payments__title'>История поездок</div>
-          <HistoryPage />
         </div>
+        <HistoryPage />
       </div>
     )
   }
