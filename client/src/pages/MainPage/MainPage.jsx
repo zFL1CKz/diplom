@@ -28,6 +28,7 @@ import addresses from '../../addresses.json'
 import './MainPage.scss'
 import { SimpleModal } from '../../components/Modal/SimpleModal'
 import { SearchCard } from '../../components/Cards/SearchCard'
+import { Title } from '../../components/Title/Title'
 
 export const MainPage = () => {
   document.title = 'Moto Soul | Главная'
@@ -317,9 +318,7 @@ export const MainPage = () => {
       return (
         <div>
           <div className='container'>
-            {location.state !== undefined ? (
-              <img src={logo} alt='' className='header__img--logo' />
-            ) : (
+            {location.state === undefined && (
               <div className='header'>
                 <Link to='/profile'>
                   <Profile />
@@ -743,30 +742,13 @@ export const MainPage = () => {
               </div>
             ) : (
               <>
-                {Object.keys(card).length > 0 ? (
-                  <>
-                    <div className='trip--else'>
-                      Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку{' '}
-                      <span>"Новая поездка"</span>, чтобы погрузиться в мир
-                      драйва!
-                    </div>
-                    <Link to='/newtrip' className='link new green'>
-                      Новая поездка
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <div className='timeError' style={{ marginTop: '0' }}>
-                      Чтобы начать поездку необходимо привязать карту
-                    </div>
-                    <Link
-                      to='/payments'
-                      style={{ marginTop: '20px' }}
-                      className='link new green'>
-                      Привязать карту
-                    </Link>
-                  </>
-                )}
+                <div className='trip--else'>
+                  Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку{' '}
+                  <span>"Новая поездка"</span>, чтобы погрузиться в мир драйва!
+                </div>
+                <Link to='/newtrip' className='link new green'>
+                  Новая поездка
+                </Link>
               </>
             )}
           </div>
