@@ -565,21 +565,28 @@ export const NewTrip = () => {
         )}
 
         {currentScreen === 4 && (
-          <div className='rate'>
-            {rates.map((item, index) => {
-              return (
-                <div
-                  className='rate__item'
-                  key={index}
-                  onClick={() => {
-                    setChosen([...chosen, item])
-                    history.push('/main', [...chosen, item, String(new Date())])
-                  }}>
-                  <RateCard item={item} />
-                </div>
-              )
-            })}
-          </div>
+          <>
+            <div className='rate'>
+              {rates.map((item, index) => {
+                return (
+                  <div
+                    className='rate__item'
+                    key={index}
+                    onClick={() => {
+                      setChosen([...chosen, item])
+                      history.push('/main', [
+                        ...chosen,
+                        item,
+                        String(new Date()),
+                      ])
+                    }}>
+                    <RateCard item={item} />
+                  </div>
+                )
+              })}
+            </div>
+            <h1>Test</h1>
+          </>
         )}
       </div>
     )

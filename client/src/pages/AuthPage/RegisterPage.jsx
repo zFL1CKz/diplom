@@ -15,6 +15,8 @@ export const RegisterPage = () => {
   const history = useHistory()
   const { loading, request, error, clearError } = useHttp()
 
+  const [inputChecked, setInputChecked] = useState(false)
+
   let [isPassView, setIsPassView] = useState(false)
   let [isPassView1, setIsPassView1] = useState(false)
   let [pass, setPass] = useState('password')
@@ -91,7 +93,6 @@ export const RegisterPage = () => {
               </div>
               <div className='input__group'>
                 <input className='input' type={pass1} placeholder='Подтверждение пароля' id='confPass' />
-
                 {!isPassView1 ? (
                   <div className='input__img' onClick={showPass1}>
                     <img src={hidden} alt='' />
@@ -103,7 +104,14 @@ export const RegisterPage = () => {
                 )}
               </div>
 
-              <button onClick={registerHandler} disabled={loading}>
+              <div className='checkbox'>
+                <input id='checkbox' type='checkbox' defaultChecked={inputChecked} onChange={() => setInputChecked(!inputChecked)} />
+                <label htmlFor='checkbox'>
+                  Прочитал <Link to='/terms/user-agreement'>пользовательское соглашение</Link> и согласен с условиями <Link to='/terms/privacy'>политики обработки персональных данных</Link>
+                </label>
+              </div>
+
+              <button onClick={registerHandler} disabled={!inputChecked}>
                 Зарегистрироваться
               </button>
               <p className='reg--link'>

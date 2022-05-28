@@ -7,6 +7,11 @@ import { MainPage } from './pages/MainPage/MainPage'
 import { NewTrip } from './pages/NewTrip/NewTrip'
 import { ProfilePage } from './pages/ProfilePage/ProfilePage'
 import { PaymentsPage } from './pages/PaymentsPage/PaymentsPage'
+import { TermsPage } from './pages/TermsPage/TermsPage'
+import { Contract } from './pages/TermsPage/Contract'
+import { UserAgreement } from './pages/TermsPage/UserAgreement'
+import { Privacy } from './pages/TermsPage/Privacy'
+import { RentContract } from './pages/TermsPage/RentContract'
 
 export const useRoutes = (isAuth) => {
   if (isAuth) {
@@ -39,6 +44,21 @@ export const useRoutes = (isAuth) => {
       </Route>
       <Route path='/login' exact>
         <AuthPage />
+      </Route>
+      <Route path='/terms' exact>
+        <TermsPage />
+      </Route>
+      <Route path='/terms/contract' exact>
+        <Contract />
+      </Route>
+      <Route path='/terms/privacy' exact>
+        <Privacy />
+      </Route>
+      <Route path='/terms/rent-contract' exact>
+        <RentContract />
+      </Route>
+      <Route path='/terms/user-agreement' exact>
+        <UserAgreement />
       </Route>
       <Redirect to='/login' />
     </Switch>

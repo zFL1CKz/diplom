@@ -197,3 +197,56 @@
     }
   }
 }
+
+.checkbox {
+  position: relative;
+  margin-bottom: 15px;
+
+  & input {
+    appearance: none;
+    position: absolute;
+
+    &:checked + label::before {
+      background: #24ca49;
+      border-color: #24ca49;
+    }
+  }
+
+  & label {
+    padding-left: 20px;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 12px;
+    color: #666592;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 14px;
+      transition: all 0.2s linear;
+
+      border: 1px solid #666592;
+      background: transparent;
+      position: absolute;
+      top: 2px;
+      left: 0;
+    }
+
+    & a {
+      color: #24ca49;
+      text-decoration: underline;
+    }
+  }
+}
+button:disabled {
+  background: #f4f1f2 !important;
+  box-shadow: 1px 1px 2px rgb(255 255 255 / 30%), -1px -1px 2px rgb(215 212 213 / 50%), inset -5px 5px 10px rgb(215 212 213 / 20%), inset 5px -5px 10px rgb(215 212 213 / 20%),
+    inset -5px -5px 10px rgb(255 255 255 / 90%), inset 5px 5px 13px rgb(215 212 213 / 90%) !important;
+  background: #666592 !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-fill-color: transparent !important;
+  opacity: 0.6 !important;
+}
