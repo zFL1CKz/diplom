@@ -20,7 +20,6 @@ export const Contract = () => {
       </header>
 
       <section>
-        <div className='article__title m50'>Договор</div>
         <div className='article__text article--contract'>
           <meta httpEquiv='Content-Type' content='text/html; charset=utf-8' />
           <link rel='stylesheet' type='text/css' href='https://service-online.su/text/text-editor/ckeditor-full/contents.css' />

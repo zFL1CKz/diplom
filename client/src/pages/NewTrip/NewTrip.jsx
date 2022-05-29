@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import InputMask from 'react-input-mask'
 import axios from 'axios'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import { Loader } from '../../components/Loader/Loader'
 import { AuthContext } from '../../context/AuthContext'
@@ -9,6 +9,7 @@ import { useHttp } from '../../hooks/http.hook'
 import { ChooseCard } from '../../components/Cards/ChooseCard'
 import { RateCard } from '../../components/Cards/RateCard'
 import { Tap } from '../../components/Tap/Tap'
+import SignaturePad from 'react-signature-canvas'
 
 import logo from '../../img/icons/small--logo.svg'
 
@@ -31,7 +32,13 @@ export const NewTrip = () => {
   const [showError, setShowError] = useState('')
   const [formFocus, setFormFocus] = useState(false)
   const [inputDisabled, setInputDisabled] = useState(false)
+  const [passportInputDisabled, setPassportInputDisabled] = useState(false)
   const [showCard, setShowCard] = useState(false)
+  const [signatureIsEmpty, setSignatureIsEmpty] = useState(false)
+  const [signatureImg, setSignatureImg] = useState('')
+  const [userPassport, setUserPassport] = useState([])
+
+  const [inputChecked, setInputChecked] = useState(false)
 
   const [chosen, setChosen] = useState([])
 
@@ -41,20 +48,25 @@ export const NewTrip = () => {
     num: '',
   })
 
+  const [passportForm, setPassportForm] = useState({
+    seria: '',
+    number: '',
+  })
+
+  const sigCanvas = useRef({})
+  const clearCanvas = () => sigCanvas.current.clear()
+
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  const passportHandler = (e) => {
+    setPassportForm({ ...passportForm, [e.target.name]: e.target.value })
+  }
+
   useEffect(() => {
     setFormFocus(false)
-    if (
-      form.fio !== '' ||
-      (form.date.indexOf('_') === -1 &&
-        form.date.length === 10 &&
-        form.num.indexOf('_') === -1 &&
-        form.num.length === 11)
-    )
-      setFormFocus(true)
+    if (form.fio !== '' || (form.date.indexOf('_') === -1 && form.date.length === 10 && form.num.indexOf('_') === -1 && form.num.length === 11)) setFormFocus(true)
     else setFormFocus(false)
   }, [form])
 
@@ -67,12 +79,7 @@ export const NewTrip = () => {
       num: null,
       cat: null,
     }
-    if (
-      form.date.indexOf('_') === -1 &&
-      form.date.length === 10 &&
-      form.num.indexOf('_') === -1 &&
-      form.num.length === 11
-    ) {
+    if (form.date.indexOf('_') === -1 && form.date.length === 10 && form.num.indexOf('_') === -1 && form.num.length === 11) {
       setInputDisabled(true)
       let dot = '.'
       setShowError('Идет проверка ВУ, пожалуйста, подождите.')
@@ -83,9 +90,7 @@ export const NewTrip = () => {
       }, 1000)
       const num = form.num.split(' ').join('')
       try {
-        await request(
-          `https://api-cloud.ru/api/gibdd.php?type=driver&serianomer=${num}&date=${form.date}&token=ad3996abac92cd95b045d73b5b5eacca`
-        ).then(async (res) => {
+        await request(`https://api-cloud.ru/api/gibdd.php?type=driver&serianomer=${num}&date=${form.date}&token=ad3996abac92cd95b045d73b5b5eacca`).then(async (res) => {
           clearInterval(timer)
           setShowError('')
           if (res.found === false) {
@@ -175,6 +180,22 @@ export const NewTrip = () => {
     )
   }
 
+  const getInfo = useCallback(async () => {
+    try {
+      await request('/api/user/getinfo', 'GET', null, {
+        Authorization: `Bearer ${token}`,
+      }).then((res) => {
+        setUserPassport(res.passport)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [token, request])
+
+  useEffect(() => {
+    getInfo()
+  }, [getInfo])
+
   const getClasses = useCallback(async () => {
     try {
       await request('/api/getclasses', 'GET', null, {
@@ -229,8 +250,7 @@ export const NewTrip = () => {
               if (result !== null) {
                 for (const locationItem of res) {
                   for (const currentLocation of result) {
-                    if (currentLocation === locationItem.name)
-                      arr.push(locationItem)
+                    if (currentLocation === locationItem.name) arr.push(locationItem)
                   }
                 }
               }
@@ -256,22 +276,13 @@ export const NewTrip = () => {
     else if (motoClass === 'Эндуро') return ['Лес', 'Бездорожье']
     else if (motoClass === 'Скутер') {
       if (cat === undefined) {
-        setShowError(
-          'Для езды по городу необходимо иметь соответствующую категорию прав'
-        )
+        setShowError('Для езды по городу необходимо иметь соответствующую категорию прав')
         setShowCard(true)
         return null
       } else {
-        if (
-          cat.indexOf('A1') !== -1 ||
-          cat.indexOf('A') !== -1 ||
-          cat.indexOf('M') !== -1
-        )
-          return ['Город']
+        if (cat.indexOf('A1') !== -1 || cat.indexOf('A') !== -1 || cat.indexOf('M') !== -1) return ['Город']
         else {
-          setShowError(
-            'Для езды по городу необходима категория прав A1, A или M'
-          )
+          setShowError('Для езды по городу необходима категория прав A1, A или M')
           setShowCard(true)
           return null
         }
@@ -286,20 +297,15 @@ export const NewTrip = () => {
             return ['Кольцевой автодром']
           }
         } else {
-          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1)
-            return ['Город', 'Кольцевой автодром']
+          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1) return ['Город', 'Кольцевой автодром']
           else {
-            setShowError(
-              'Для езды по городу необходима категория прав A или A1'
-            )
+            setShowError('Для езды по городу необходима категория прав A или A1')
             setShowCard(true)
             return ['Кольцевой автодром']
           }
         }
       } else {
-        setShowError(
-          'Для езды по городу необходимо иметь соответствующую категорию прав'
-        )
+        setShowError('Для езды по городу необходимо иметь соответствующую категорию прав')
         setShowCard(true)
         return ['Кольцевой автодром']
       }
@@ -308,27 +314,20 @@ export const NewTrip = () => {
         if (moto.specs[0] >= 125) {
           if (cat.indexOf('A') !== -1) return ['Город', 'Загород']
           else {
-            setShowError(
-              'Для езды по городу и загороду необходима категория прав A'
-            )
+            setShowError('Для езды по городу и загороду необходима категория прав A')
             setShowCard(true)
             return null
           }
         } else {
-          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1)
-            return ['Город', 'Загород']
+          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1) return ['Город', 'Загород']
           else {
-            setShowError(
-              'Для езды по городу и загороду необходима категория прав A или A1'
-            )
+            setShowError('Для езды по городу и загороду необходима категория прав A или A1')
             setShowCard(true)
             return null
           }
         }
       } else {
-        setShowError(
-          'Для езды по городу и загороду необходимо иметь соответствующую категорию прав'
-        )
+        setShowError('Для езды по городу и загороду необходимо иметь соответствующую категорию прав')
         setShowCard(true)
         return null
       }
@@ -342,50 +341,37 @@ export const NewTrip = () => {
             return ['Кольцевой автодром']
           }
         } else {
-          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1)
-            return ['Город', 'Кольцевой автодром']
+          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1) return ['Город', 'Кольцевой автодром']
           else {
-            setShowError(
-              'Для езды по городу необходима категория прав A или A1'
-            )
+            setShowError('Для езды по городу необходима категория прав A или A1')
             setShowCard(true)
             return ['Кольцевой автодром']
           }
         }
       } else {
-        setShowError(
-          'Для езды по городу необходимо иметь соответствующую категорию прав'
-        )
+        setShowError('Для езды по городу необходимо иметь соответствующую категорию прав')
         setShowCard(true)
         return ['Кольцевой автодром']
       }
     } else if (motoClass === 'Супер-спорт') {
       if (cat !== undefined) {
         if (moto.specs[0] >= 125) {
-          if (cat.indexOf('A') !== -1)
-            return ['Город', 'Кольцевой автодром', 'Загород']
+          if (cat.indexOf('A') !== -1) return ['Город', 'Кольцевой автодром', 'Загород']
           else {
-            setShowError(
-              'Для езды по городу и загороду необходима категория прав A'
-            )
+            setShowError('Для езды по городу и загороду необходима категория прав A')
             setShowCard(true)
             return ['Кольцевой автодром']
           }
         } else {
-          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1)
-            return ['Город', 'Кольцевой автодром', 'Загород']
+          if (cat.indexOf('A') !== -1 || cat.indexOf('A1') !== -1) return ['Город', 'Кольцевой автодром', 'Загород']
           else {
-            setShowError(
-              'Для езды по городу и загороду необходима категория прав A или A1'
-            )
+            setShowError('Для езды по городу и загороду необходима категория прав A или A1')
             setShowCard(true)
             return ['Кольцевой автодром']
           }
         }
       } else {
-        setShowError(
-          'Для езды по городу и загороду необходимо иметь соответствующую категорию прав'
-        )
+        setShowError('Для езды по городу и загороду необходимо иметь соответствующую категорию прав')
         setShowCard(true)
         return ['Кольцевой автодром']
       }
@@ -406,11 +392,36 @@ export const NewTrip = () => {
     }
   }, [token, request])
 
+  function startHandler() {
+    setShowError('')
+
+    if (userPassport === undefined) {
+      if (passportForm.seria.length !== 4 || passportForm.seria.indexOf('_') !== -1 || passportForm.number.length !== 6 || passportForm.number.indexOf('_') !== -1)
+        return setShowError('Необходимо заполнить данные паспорта')
+    }
+
+    if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
+
+    setSignatureImg(sigCanvas.current.toDataURL('image/png'))
+    console.log(sigCanvas.current.toDataURL('image/png'))
+
+    // setPassportInputDisabled(true)
+
+    // let dot = '.'
+    //   setShowError('Идет проверка ВУ, пожалуйста, подождите.')
+    //   const timer = setInterval(() => {
+    //     if (dot >= '...') dot = ''
+    //     dot += '.'
+    //     setShowError('Идет проверка ВУ, пожалуйста, подождите' + dot)
+    //   }, 1000)
+  }
+
   useEffect(() => {
     if (currentScreen === 1) setBodyTitle('Выберите класс мотоцикла')
     else if (currentScreen === 2) setBodyTitle('Выберите модель мотоцикла')
     else if (currentScreen === 3) setBodyTitle('Выберите локацию')
     else if (currentScreen === 4) setBodyTitle('Выберите тариф')
+    else if (currentScreen === 5) setBodyTitle('Начало поездки')
   }, [currentScreen])
 
   useEffect(() => {
@@ -491,6 +502,7 @@ export const NewTrip = () => {
                       setChosen([...chosen, item])
                       getRates()
                       setCurrentScreen(4)
+                      setShowError('')
                     }}>
                     <ChooseCard item={item} currentScreen={currentScreen} />
                   </div>
@@ -503,24 +515,12 @@ export const NewTrip = () => {
 
             {showCard && (
               <div className='profile__card'>
-                {info.fio ? (
-                  <div className='profile__fio'>{info.fio}</div>
-                ) : (
-                  <input
-                    type='text'
-                    className='profile__input center mb20'
-                    placeholder='Введите ФИО'
-                    name='fio'
-                    onChange={changeHandler}
-                  />
-                )}
+                {info.fio ? <div className='profile__fio'>{info.fio}</div> : <input type='text' className='profile__input center mb20' placeholder='Введите ФИО' name='fio' onChange={changeHandler} />}
 
                 {info.license ? (
                   <div>
                     <div className='profile__photo mb15 fio new--trip'>
-                      <div
-                        className={formFocus ? 'btn__tap active' : 'btn__tap'}
-                        onClick={profileHandler}>
+                      <div className={formFocus ? 'btn__tap active' : 'btn__tap'} onClick={profileHandler}>
                         <Tap />
                       </div>
                     </div>
@@ -532,30 +532,14 @@ export const NewTrip = () => {
                 ) : (
                   <div className='profile__group'>
                     <div className='profile__photo'>
-                      <div
-                        className={formFocus ? 'btn__tap active' : 'btn__tap'}
-                        onClick={profileHandler}>
+                      <div className={formFocus ? 'btn__tap active' : 'btn__tap'} onClick={profileHandler}>
                         <Tap />
                       </div>
                     </div>
 
                     <div>
-                      <InputMask
-                        mask='99.99.9999'
-                        name='date'
-                        onChange={changeHandler}
-                        className='profile__input center mb20'
-                        placeholder='Дата выдачи ВУ'
-                        disabled={inputDisabled}
-                      />
-                      <InputMask
-                        mask='9999 999999'
-                        name='num'
-                        onChange={changeHandler}
-                        className='profile__input center'
-                        placeholder='Серия и номер ВУ'
-                        disabled={inputDisabled}
-                      />
+                      <InputMask mask='99.99.9999' name='date' onChange={changeHandler} className='profile__input center mb20' placeholder='Дата выдачи ВУ' disabled={inputDisabled} />
+                      <InputMask mask='9999 999999' name='num' onChange={changeHandler} className='profile__input center' placeholder='Серия и номер ВУ' disabled={inputDisabled} />
                     </div>
                   </div>
                 )}
@@ -574,20 +558,56 @@ export const NewTrip = () => {
                     key={index}
                     onClick={() => {
                       setChosen([...chosen, item])
-                      history.push('/main', [
-                        ...chosen,
-                        item,
-                        String(new Date()),
-                      ])
+                      setCurrentScreen(5)
+                      // history.push('/main', [...chosen, item, String(new Date())])
                     }}>
                     <RateCard item={item} />
                   </div>
                 )
               })}
             </div>
-            <h1>Test</h1>
           </>
         )}
+
+        {currentScreen === 5 && (
+          <>
+            {userPassport === undefined && (
+              <div className='passport--input-group'>
+                <InputMask onChange={passportHandler} name='seria' mask='9999' className='profile__input center' placeholder='Серия' disabled={passportInputDisabled} />
+                <InputMask onChange={passportHandler} name='number' mask='999999' className='profile__input center' placeholder='Номер' disabled={passportInputDisabled} />
+              </div>
+            )}
+            <div className='canvas'>
+              <SignaturePad
+                penColor='#666592'
+                ref={sigCanvas}
+                canvasProps={{
+                  className: 'signatureCanvas',
+                }}
+              />
+              <button className='canvas__btn' onClick={clearCanvas}>
+                Очистить поле
+              </button>
+            </div>
+
+            <button className='canvas__btn save' onClick={startHandler}>
+              Начать поездку
+            </button>
+
+            <div className='error' style={{ marginTop: '10px' }}>
+              {showError}
+            </div>
+          </>
+        )}
+
+        {/* <div className='checkbox'>
+              <input id='checkbox' type='checkbox' defaultChecked={inputChecked} onChange={() => setInputChecked(!inputChecked)} />
+              <label htmlFor='checkbox'>
+                Прочитал <Link to='/terms/user-agreement'>пользовательское соглашение</Link> и согласен с условиями <Link to='/terms/privacy'>политики обработки персональных данных</Link>
+              </label>
+            </div>
+
+            <button disabled={!inputChecked}>Зарегистрироваться</button> */}
       </div>
     )
   }

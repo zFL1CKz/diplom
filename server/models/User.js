@@ -18,6 +18,10 @@ const schema = new Schema({
   rating: { type: Number, default: 5 },
   ticket: { type: Types.ObjectId, ref: 'Ticket' },
   races: { type: Types.ObjectId, ref: 'Races' },
+  passport: {
+    seria: { type: String },
+    number: { type: String },
+  },
 })
 
 module.exports = model('User', schema)

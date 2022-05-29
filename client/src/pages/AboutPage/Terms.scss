@@ -1,0 +1,38 @@
+.terms {
+  font-family: inherit;
+  color: #666592;
+  font-size: 14px;
+  text-align: justify;
+}
+.terms__title {
+  font-weight: 700;
+  text-align: center;
+  font-size: 20px;
+  margin: 25px 0;
+}
+.terms__approved {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+.terms__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.terms__item {
+  background: linear-gradient(135deg, #fffdfe 0%, #e8e5e6 100%);
+  box-shadow: -5px 5px 10px rgb(220 217 218 / 20%), 5px -5px 10px rgb(220 217 218 / 20%), -5px -5px 10px rgb(255 255 255 / 90%), 5px 5px 13px rgb(220 217 218 / 90%),
+    inset 1px 1px 2px rgb(255 255 255 / 30%), inset -1px -1px 2px rgb(220 217 218 / 50%);
+  border-radius: 20px;
+  padding: 16px 0;
+  text-align: center;
+  width: 100%;
+
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  color: #666592;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,30 @@
+.about {
+  & iframe {
+    border: 1px solid #666592;
+    border-radius: 20px;
+    margin-top: 20px;
+  }
+}
+.about__title {
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  color: #666592;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.about__block {
+  margin-bottom: 20px;
+}
+.about__text {
+  font-family: inherit;
+  font-size: 14px;
+  color: #666592;
+  font-weight: 400;
+  line-height: 16px;
+
+  & span {
+    font-weight: 600;
+    font-size: 16px;
+  }
+}

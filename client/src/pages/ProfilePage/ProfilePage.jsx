@@ -53,16 +53,10 @@ export const ProfilePage = () => {
   useEffect(() => {
     setPassError('')
     setPassFocus(false)
-    if (
-      passForm.pass.length >= 6 &&
-      passForm.newPass === passForm.confPass &&
-      passForm.newPass.length >= 6 &&
-      passForm.pass !== passForm.newPass
-    ) {
+    if (passForm.pass.length >= 6 && passForm.newPass === passForm.confPass && passForm.newPass.length >= 6 && passForm.pass !== passForm.newPass) {
       setPassError('')
       setPassFocus(true)
-    } else if (passForm.newPass !== passForm.confPass)
-      setPassError('Пароли не совпадают')
+    } else if (passForm.newPass !== passForm.confPass) setPassError('Пароли не совпадают')
   }, [passForm])
 
   async function setNewPass() {
@@ -111,14 +105,7 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     setFormFocus(false)
-    if (
-      form.fio !== '' ||
-      (form.date.indexOf('_') === -1 &&
-        form.date.length === 10 &&
-        form.num.indexOf('_') === -1 &&
-        form.num.length === 11)
-    )
-      setFormFocus(true)
+    if (form.fio !== '' || (form.date.indexOf('_') === -1 && form.date.length === 10 && form.num.indexOf('_') === -1 && form.num.length === 11)) setFormFocus(true)
     else setFormFocus(false)
   }, [form])
 
@@ -131,12 +118,7 @@ export const ProfilePage = () => {
       num: null,
       cat: null,
     }
-    if (
-      form.date.indexOf('_') === -1 &&
-      form.date.length === 10 &&
-      form.num.indexOf('_') === -1 &&
-      form.num.length === 11
-    ) {
+    if (form.date.indexOf('_') === -1 && form.date.length === 10 && form.num.indexOf('_') === -1 && form.num.length === 11) {
       setInputDisabled(true)
       let dot = '.'
       setShowError('Идет проверка ВУ, пожалуйста, подождите.')
@@ -147,9 +129,7 @@ export const ProfilePage = () => {
       }, 1000)
       const num = form.num.split(' ').join('')
       try {
-        await request(
-          `https://api-cloud.ru/api/gibdd.php?type=driver&serianomer=${num}&date=${form.date}&token=ad3996abac92cd95b045d73b5b5eacca`
-        ).then(async (res) => {
+        await request(`https://api-cloud.ru/api/gibdd.php?type=driver&serianomer=${num}&date=${form.date}&token=ad3996abac92cd95b045d73b5b5eacca`).then(async (res) => {
           clearInterval(timer)
           setShowError('')
           if (res.found === false) {
@@ -242,13 +222,7 @@ export const ProfilePage = () => {
   function checkRating(rating) {
     let content = []
     for (let i = 1; i <= 10; i++) {
-      content.push(
-        <div
-          key={i}
-          className={
-            i <= rating ? 'profile__rating_star active' : 'profile__rating_star'
-          }></div>
-      )
+      content.push(<div key={i} className={i <= rating ? 'profile__rating_star active' : 'profile__rating_star'}></div>)
     }
     return content
   }
@@ -275,22 +249,13 @@ export const ProfilePage = () => {
               {info.fio ? (
                 <div className='profile__fio'>{info.fio}</div>
               ) : (
-                <input
-                  type='text'
-                  className='profile__input center mb20'
-                  placeholder='Введите ФИО'
-                  name='fio'
-                  value={info.fio}
-                  onChange={changeHandler}
-                />
+                <input type='text' className='profile__input center mb20' placeholder='Введите ФИО' name='fio' value={info.fio} onChange={changeHandler} />
               )}
 
               {info.license ? (
                 <div>
                   <div className='profile__photo mb15 fio'>
-                    <div
-                      className={formFocus ? 'btn__tap active' : 'btn__tap'}
-                      onClick={profileHandler}>
+                    <div className={formFocus ? 'btn__tap active' : 'btn__tap'} onClick={profileHandler}>
                       <Tap />
                     </div>
                   </div>
@@ -302,32 +267,14 @@ export const ProfilePage = () => {
               ) : (
                 <div className='profile__group'>
                   <div className='profile__photo'>
-                    <div
-                      className={formFocus ? 'btn__tap active' : 'btn__tap'}
-                      onClick={profileHandler}>
+                    <div className={formFocus ? 'btn__tap active' : 'btn__tap'} onClick={profileHandler}>
                       <Tap />
                     </div>
                   </div>
 
                   <div>
-                    <InputMask
-                      mask='99.99.9999'
-                      name='date'
-                      onChange={changeHandler}
-                      className='profile__input center mb20'
-                      placeholder='Дата выдачи ВУ'
-                      disabled={inputDisabled}
-                      value={info.date}
-                    />
-                    <InputMask
-                      mask='9999 999999'
-                      name='num'
-                      onChange={changeHandler}
-                      className='profile__input center'
-                      placeholder='Серия и номер ВУ'
-                      disabled={inputDisabled}
-                      value={info.num}
-                    />
+                    <InputMask mask='99.99.9999' name='date' onChange={changeHandler} className='profile__input center mb20' placeholder='Дата выдачи ВУ' disabled={inputDisabled} value={info.date} />
+                    <InputMask mask='9999 999999' name='num' onChange={changeHandler} className='profile__input center' placeholder='Серия и номер ВУ' disabled={inputDisabled} value={info.num} />
                   </div>
                 </div>
               )}
@@ -340,47 +287,18 @@ export const ProfilePage = () => {
           <div className='profile__block'>
             <div className='profile__title'>Ваш персональный рейтинг</div>
             <div className='profile__rating'>{info.rating} из 10</div>
-            <div className='profile__rating_group'>
-              {checkRating(info.rating)}
-            </div>
+            <div className='profile__rating_group'>{checkRating(info.rating)}</div>
           </div>
 
           <div className='profile__block'>
             <div className='profile__title'>Безопасность</div>
-            <input
-              name='pass'
-              onChange={passHandler}
-              type='password'
-              value={passForm.pass}
-              className='profile__input mb10'
-              placeholder='Старый пароль'
-            />
-            <input
-              name='newPass'
-              onChange={passHandler}
-              type='password'
-              value={passForm.newPass}
-              className='profile__input mb10'
-              placeholder='Новый пароль'
-            />
-            <input
-              name='confPass'
-              onChange={passHandler}
-              type='password'
-              value={passForm.confPass}
-              className='profile__input mb10'
-              placeholder='Повторите новый пароль'
-            />
-            <div
-              className={
-                passFocus ? 'profile__btn show' : 'profile__btn hidden'
-              }
-              onClick={setNewPass}>
+            <input name='pass' onChange={passHandler} type='password' value={passForm.pass} className='profile__input mb10' placeholder='Старый пароль' />
+            <input name='newPass' onChange={passHandler} type='password' value={passForm.newPass} className='profile__input mb10' placeholder='Новый пароль' />
+            <input name='confPass' onChange={passHandler} type='password' value={passForm.confPass} className='profile__input mb10' placeholder='Повторите новый пароль' />
+            <div className={passFocus ? 'profile__btn show' : 'profile__btn hidden'} onClick={setNewPass}>
               Изменить
             </div>
-            <div
-              className={isGreen ? 'error green' : 'error'}
-              style={{ marginTop: '0' }}>
+            <div className={isGreen ? 'error green' : 'error'} style={{ marginTop: '0' }}>
               {passError}
             </div>
           </div>
@@ -395,6 +313,16 @@ export const ProfilePage = () => {
                 }}
                 className='profile__btn'>
                 История поездок
+              </Link>
+
+              <Link
+                to={{
+                  pathname: '/terms',
+                  state: info,
+                }}
+                style={{ marginTop: '10px' }}
+                className='profile__btn'>
+                О компании
               </Link>
             </div>
           </div>

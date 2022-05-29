@@ -73,18 +73,12 @@ export const PaymentsPage = () => {
   useEffect(() => {
     setCardError('')
     setTimeout(() => {
-      if (
-        form.number.split(' ').join('').length === 16 &&
-        form.date.split('/').join('').length === 4 &&
-        form.cvv.length === 3
-      ) {
+      if (form.number.split(' ').join('').length === 16 && form.date.split('/').join('').length === 4 && form.cvv.length === 3) {
         setValidCard(true)
       } else {
         if (cardInfo === undefined) {
-          if (form.number.split(' ').join('').length !== 16)
-            document.querySelector('#number').focus()
-          else if (form.date.split('/').join('').length !== 4)
-            document.querySelector('#date').focus()
+          if (form.number.split(' ').join('').length !== 16) document.querySelector('#number').focus()
+          else if (form.date.split('/').join('').length !== 4) document.querySelector('#date').focus()
           else document.querySelector('#cvv').focus()
           setValidCard(false)
         }
@@ -99,11 +93,7 @@ export const PaymentsPage = () => {
       apiKey: '78ba5ae02f023b053421e7f3cf9edc2f',
     })
     let cardDate = form.date.split('/')
-    if (
-      binking.validate(form.number, cardDate[0], cardDate[1], form.cvv)
-        .hasErrors
-    )
-      setCardError('Введите корректные данные карты')
+    if (binking.validate(form.number, cardDate[0], cardDate[1], form.cvv).hasErrors) setCardError('Введите корректные данные карты')
     else {
       let dot = '.'
       setCardError('Идет проверка карты, пожалуйста, подождите.')
@@ -157,9 +147,7 @@ export const PaymentsPage = () => {
 
           <div className='payments__title'>Данные карты</div>
           <div className='payments__card'>
-            <div
-              className={validCard ? 'btn__tap active' : 'btn__tap'}
-              onClick={cardHandler}>
+            <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
               <Tap />
             </div>
             <div className='payments__group img--group'>
@@ -169,32 +157,16 @@ export const PaymentsPage = () => {
 
             {cardInfo !== undefined ? (
               <div className='payments__info'>
-                <div
-                  className={
-                    cardView ? 'payments__view active' : 'payments__view'
-                  }
-                  onClick={() => setCardView(!cardView)}>
+                <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
                   <img src={eye} alt='' />
                 </div>
-                <div className='payments__number'>
-                  {cardView
-                    ? cardInfo.num
-                    : `**** **** **** ${cardInfo.num.slice(-4)}`}
-                </div>
+                <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
                 <div className='payments__group jcsb'>
                   <div className='payments__group'>
-                    <div className='payments__card_text payments--date'>
-                      {cardView ? cardInfo.date : '**/**'}
-                    </div>
-                    <div className='payments__card_text payments--cvv'>
-                      {cardView ? cardInfo.cvv : '***'}
-                    </div>
+                    <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
+                    <div className='payments__card_text payments--cvv'>***</div>
                   </div>
-                  <img
-                    src={cardInfo.alias !== null ? cardInfo.alias : cardMir}
-                    alt=''
-                    className='payments__alias'
-                  />
+                  <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
                 </div>
               </div>
             ) : (
@@ -210,26 +182,8 @@ export const PaymentsPage = () => {
                   id='number'
                 />
                 <div className='payments__inputs_group'>
-                  <InputMask
-                    mask='99/99'
-                    maskPlaceholder=''
-                    name='date'
-                    onChange={changeHandler}
-                    className='payments__input'
-                    placeholder='Дата'
-                    autoComplete='cc-exp'
-                    id='date'
-                  />
-                  <InputMask
-                    mask='999'
-                    maskPlaceholder=''
-                    name='cvv'
-                    onChange={changeHandler}
-                    className='payments__input'
-                    placeholder='Код'
-                    autoComplete='cc-csc'
-                    id='cvv'
-                  />
+                  <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={changeHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
+                  <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={changeHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
                 </div>
               </div>
             )}
