@@ -73,3 +73,18 @@ button.canvas__btn {
     width: 48%;
   }
 }
+.passport__title {
+  color: #666592;
+  font-size: 16px;
+  font-family: inherit;
+  margin-bottom: 20px;
+
+  & span {
+    font-weight: 700;
+  }
+
+  & a {
+    color: #24ca49;
+    text-decoration: underline;
+  }
+}

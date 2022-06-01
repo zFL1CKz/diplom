@@ -62,11 +62,11 @@ router.post('/setinfo', auth, async (req, res) => {
 
 router.post('/setpassport', auth, async (req, res) => {
   try {
-    const { seria, num } = req.body
+    const { seria, number } = req.body
     const user = await User.findOne({ _id: req.user.userId })
 
     user.passport.seria = seria
-    user.passport.number = num
+    user.passport.number = number
 
     await user.save()
     res.json(user)

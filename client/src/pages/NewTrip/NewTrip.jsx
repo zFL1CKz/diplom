@@ -54,7 +54,10 @@ export const NewTrip = () => {
   })
 
   const sigCanvas = useRef({})
-  const clearCanvas = () => sigCanvas.current.clear()
+  const clearCanvas = () => {
+    setShowError('')
+    sigCanvas.current.clear()
+  }
 
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -392,41 +395,46 @@ export const NewTrip = () => {
     }
   }, [token, request])
 
-  async function startHandler() {
+  async function setPassport(reqObject) {
+    console.log(reqObject)
+    try {
+      await request(
+        '/api/user/setpassport',
+        'POST',
+        { ...reqObject },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      )
+      getInfo()
+    } catch (error) {
+      setShowError(error)
+    }
+  }
+
+  function startHandler() {
     setShowError('')
+
+    let reqObject = {
+      seria: passportForm.seria,
+      number: passportForm.number,
+    }
 
     if (userPassport === undefined) {
       if (passportForm.seria.length !== 4 || passportForm.seria.indexOf('_') !== -1 || passportForm.number.length !== 6 || passportForm.number.indexOf('_') !== -1)
         return setShowError('Необходимо заполнить данные паспорта')
-    } else {
-      let reqObject = {
-        seria: passportForm.seria,
-        num: passportForm.number,
-      }
-      try {
-        let data = await request(
-          '/api/user/setpassport',
-          'POST',
-          { ...reqObject },
-          {
-            Authorization: `Bearer ${token}`,
-          }
-        )
-        getInfo()
-        console.log(data)
-      } catch (error) {
-        setShowError(error)
+      else {
+        setPassport(reqObject)
       }
     }
 
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
-
     setSignatureImg(sigCanvas.current.toDataURL('image/png'))
 
-    history.push('/main', [...chosen, String(new Date())])
     // console.log(sigCanvas.current.toDataURL('image/png'))
 
-    // setPassportInputDisabled(true)
+    setPassportInputDisabled(true)
+    history.push('/main', [...chosen, String(new Date())])
 
     // let dot = '.'
     //   setShowError('Идет проверка ВУ, пожалуйста, подождите.')
@@ -593,11 +601,19 @@ export const NewTrip = () => {
         {currentScreen === 5 && (
           <>
             {userPassport === undefined && (
-              <div className='passport--input-group'>
-                <InputMask onChange={passportHandler} name='seria' mask='9999' className='profile__input center' placeholder='Серия' disabled={passportInputDisabled} />
-                <InputMask onChange={passportHandler} name='number' mask='999999' className='profile__input center' placeholder='Номер' disabled={passportInputDisabled} />
-              </div>
+              <>
+                <div className='passport__title'>
+                  Для того, чтобы договор имел юридическую силу необходимо заполнить <span>серию</span> и <span>номер</span> паспорта
+                </div>
+                <div className='passport--input-group'>
+                  <InputMask onChange={passportHandler} name='seria' mask='9999' className='profile__input center' placeholder='Серия' disabled={passportInputDisabled} />
+                  <InputMask onChange={passportHandler} name='number' mask='999999' className='profile__input center' placeholder='Номер' disabled={passportInputDisabled} />
+                </div>
+              </>
             )}
+            <div className='passport__title'>
+              Для согласия с условиями <Link to='/terms/rent-contract'>договора аренды мототехники</Link> требуется электронная подпись (поле ниже).
+            </div>
             <div className='canvas'>
               <SignaturePad
                 penColor='#666592'
