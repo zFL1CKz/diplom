@@ -11,6 +11,7 @@ app.use('/api/races', require('./routes/races.routes'))
 app.use('/api/user', require('./routes/user.routes'))
 app.use('/api/ticket', require('./routes/ticket.routes'))
 app.use('/api', require('./routes/newtrip.routes'))
+app.use('/api', require('./routes/usertorace.routes'))
 
 const PORT = config.get('PORT') || 5000
 

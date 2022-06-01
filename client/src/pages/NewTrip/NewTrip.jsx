@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import InputMask from 'react-input-mask'
 import axios from 'axios'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import { Loader } from '../../components/Loader/Loader'
 import { AuthContext } from '../../context/AuthContext'
@@ -19,6 +19,8 @@ import './NewTrip.scss'
 export const NewTrip = () => {
   document.title = 'Moto Soul | Новая поездка'
   const history = useHistory()
+  const locationState = useLocation()
+
   const { token } = useContext(AuthContext)
   const { request } = useHttp()
   const [isReady, setIsReady] = useState(false)
@@ -27,20 +29,17 @@ export const NewTrip = () => {
   const [motos, setMotos] = useState([])
   const [locations, setLocations] = useState([])
   const [rates, setRates] = useState([])
-  const [currentScreen, setCurrentScreen] = useState(1)
+  const [currentScreen, setCurrentScreen] = useState(locationState.state !== undefined ? Object.keys(locationState.state).length + 1 : 1)
   const [bodyTitle, setBodyTitle] = useState('')
   const [showError, setShowError] = useState('')
   const [formFocus, setFormFocus] = useState(false)
   const [inputDisabled, setInputDisabled] = useState(false)
   const [passportInputDisabled, setPassportInputDisabled] = useState(false)
   const [showCard, setShowCard] = useState(false)
-  const [signatureIsEmpty, setSignatureIsEmpty] = useState(false)
   const [signatureImg, setSignatureImg] = useState('')
   const [userPassport, setUserPassport] = useState([])
 
-  const [inputChecked, setInputChecked] = useState(false)
-
-  const [chosen, setChosen] = useState([])
+  const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
   const [form, setForm] = useState({
     fio: '',
@@ -446,11 +445,22 @@ export const NewTrip = () => {
   }
 
   useEffect(() => {
-    if (currentScreen === 1) setBodyTitle('Выберите класс мотоцикла')
-    else if (currentScreen === 2) setBodyTitle('Выберите модель мотоцикла')
-    else if (currentScreen === 3) setBodyTitle('Выберите локацию')
-    else if (currentScreen === 4) setBodyTitle('Выберите тариф')
-    else if (currentScreen === 5) setBodyTitle('Начало поездки')
+    if (currentScreen === 1) {
+      setBodyTitle('Выберите класс мотоцикла')
+      setIsReady(false)
+    } else if (currentScreen === 2) {
+      setBodyTitle('Выберите модель мотоцикла')
+      setIsReady(false)
+    } else if (currentScreen === 3) {
+      setBodyTitle('Выберите локацию')
+      setIsReady(false)
+    } else if (currentScreen === 4) {
+      setBodyTitle('Выберите тариф')
+      setIsReady(false)
+      getRates()
+    } else if (currentScreen === 5) {
+      setBodyTitle('Начало поездки')
+    }
   }, [currentScreen])
 
   useEffect(() => {
@@ -603,7 +613,7 @@ export const NewTrip = () => {
             {userPassport === undefined && (
               <>
                 <div className='passport__title'>
-                  Для того, чтобы договор имел юридическую силу необходимо заполнить <span>серию</span> и <span>номер</span> паспорта
+                  Перед началом поездки требуется заполнить <span>серию</span> и <span>номер</span> паспорта
                 </div>
                 <div className='passport--input-group'>
                   <InputMask onChange={passportHandler} name='seria' mask='9999' className='profile__input center' placeholder='Серия' disabled={passportInputDisabled} />
@@ -612,7 +622,15 @@ export const NewTrip = () => {
               </>
             )}
             <div className='passport__title'>
-              Для согласия с условиями <Link to='/terms/rent-contract'>договора аренды мототехники</Link> требуется электронная подпись (поле ниже).
+              Для согласия с условиями{' '}
+              <Link
+                to={{
+                  pathname: '/terms/rent-contract',
+                  state: chosen,
+                }}>
+                договора аренды мототехники
+              </Link>{' '}
+              требуется электронная подпись (поле ниже).
             </div>
             <div className='canvas'>
               <SignaturePad
