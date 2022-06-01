@@ -9,9 +9,7 @@ const router = Router()
 
 router.get('/getinfo', auth, async (req, res) => {
   try {
-    const info = await User.findOne({ _id: req.user.userId })
-      .populate('ticket')
-      .populate('races')
+    const info = await User.findOne({ _id: req.user.userId }).populate('ticket').populate('races')
     res.json(info)
   } catch (error) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
@@ -62,6 +60,21 @@ router.post('/setinfo', auth, async (req, res) => {
   }
 })
 
+router.post('/setpassport', auth, async (req, res) => {
+  try {
+    const { seria, num } = req.body
+    const user = await User.findOne({ _id: req.user.userId })
+
+    user.passport.seria = seria
+    user.passport.number = num
+
+    await user.save()
+    res.json(user)
+  } catch (error) {
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
+  }
+})
+
 router.post('/setpass', auth, async (req, res) => {
   try {
     const { pass, newPass } = req.body
@@ -69,8 +82,7 @@ router.post('/setpass', auth, async (req, res) => {
 
     const isMatch = await bcrypt.compare(pass, user.password)
 
-    if (!isMatch)
-      return res.status(400).json({ message: 'Неверный текущий пароль' })
+    if (!isMatch) return res.status(400).json({ message: 'Неверный текущий пароль' })
 
     const hashPass = await bcrypt.hash(newPass, 12)
 

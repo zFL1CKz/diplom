@@ -83,39 +83,16 @@ export const MainPage = () => {
     let nameArr = []
 
     for (const moto of motos) {
-      if (
-        Object.values(moto)[2]
-          .name.toLowerCase()
-          .indexOf(searchInput.trim().toLowerCase()) !== -1
-      )
-        classArr.push(moto)
-      if (
-        Object.values(moto)[1]
-          .toLowerCase()
-          .indexOf(searchInput.trim().toLowerCase()) !== -1
-      )
-        nameArr.push(moto)
+      if (Object.values(moto)[2].name.toLowerCase().indexOf(searchInput.trim().toLowerCase()) !== -1) classArr.push(moto)
+      if (Object.values(moto)[1].toLowerCase().indexOf(searchInput.trim().toLowerCase()) !== -1) nameArr.push(moto)
     }
-    setFilteredMotos(
-      classArr
-        .filter((x) => !nameArr.includes(x))
-        .concat(nameArr.filter((x) => !classArr.includes(x)))
-    )
+    setFilteredMotos(classArr.filter((x) => !nameArr.includes(x)).concat(nameArr.filter((x) => !classArr.includes(x))))
   }, [searchInput, motos])
 
   const raceHandler = async () => {
-    if (
-      location.state[2].name === 'Город' ||
-      location.state[2].name === 'Загород'
-    ) {
-      var from =
-        addresses.addresses[
-          Math.floor(Math.random() * addresses.addresses.length)
-        ]
-      var to =
-        addresses.addresses[
-          Math.floor(Math.random() * addresses.addresses.length)
-        ]
+    if (location.state[2].name === 'Город' || location.state[2].name === 'Загород') {
+      var from = addresses.addresses[Math.floor(Math.random() * addresses.addresses.length)]
+      var to = addresses.addresses[Math.floor(Math.random() * addresses.addresses.length)]
     }
 
     let reqObject = {
@@ -166,28 +143,20 @@ export const MainPage = () => {
 
   function checkPay() {
     if (location.state[3].name === 'Поминутный') return Math.floor(minutes * 10)
-    else if (location.state[3].name === 'Почасовой')
-      return Math.floor((minutes / 60) * 500)
+    else if (location.state[3].name === 'Почасовой') return Math.floor((minutes / 60) * 500)
     else return Math.floor((minutes / 60 / 24) * 9000)
   }
 
   function checkDate() {
-    return new Date(
-      (Math.floor(new Date(location.state[4]).getTime() / 1000) +
-        minutes * 60) *
-        1000
-    ).toISOString()
+    return new Date((Math.floor(new Date(location.state[4]).getTime() / 1000) + minutes * 60) * 1000).toISOString()
   }
 
   function checkTime() {
     setTimeError('')
     let rate = location.state[3].name
-    if (rate === 'По дням' && Math.floor(minutes / 60) < 24)
-      setTimeError('Вы должны проехать минимум 24 часа по выбранному тарифу')
-    else if (rate === 'Почасовой' && Math.floor(minutes) < 60)
-      setTimeError('Вы должны проехать минимум 1 час по выбранному тарифу')
-    else if (rate === 'Поминутный' && Math.floor(minutes) < 5)
-      setTimeError('Вы должны проехать минимум 5 минут по выбранному тарифу')
+    if (rate === 'По дням' && Math.floor(minutes / 60) < 24) setTimeError('Вы должны проехать минимум 24 часа по выбранному тарифу')
+    else if (rate === 'Почасовой' && Math.floor(minutes) < 60) setTimeError('Вы должны проехать минимум 1 час по выбранному тарифу')
+    else if (rate === 'Поминутный' && Math.floor(minutes) < 5) setTimeError('Вы должны проехать минимум 5 минут по выбранному тарифу')
     else setModalActive(true)
   }
 
@@ -196,13 +165,7 @@ export const MainPage = () => {
     setIsReady(false)
     setMinutes(0)
     setSpeed(0)
-    location.state = [
-      lastRace.moto.class,
-      lastRace.moto,
-      lastRace.location,
-      lastRace.rate,
-      String(new Date()),
-    ]
+    location.state = [lastRace.moto.class, lastRace.moto, lastRace.location, lastRace.rate, String(new Date())]
     setIsReady(true)
   }
 
@@ -327,17 +290,13 @@ export const MainPage = () => {
                 <img src={logo} alt='logo' />
               </div>
             )}
+            {location.state !== undefined && <img src={logo} alt='logo' style={{ margin: '15px auto' }} />}
             <FAQ />
-            {Object.keys(lastRace).length > 0 ||
-            location.state !== undefined ? (
+            {Object.keys(lastRace).length > 0 || location.state !== undefined ? (
               <div>
                 {!more ? (
                   <div className='trip'>
-                    <div className='trip__title'>
-                      {location.state !== undefined
-                        ? 'Ваша текущая поездка'
-                        : 'Ваша крайняя поездка'}
-                    </div>
+                    <div className='trip__title'>{location.state !== undefined ? 'Ваша текущая поездка' : 'Ваша крайняя поездка'}</div>
                     <div className='trip__info'>
                       {location.state !== undefined ? (
                         <div className='location__group'>
@@ -345,15 +304,8 @@ export const MainPage = () => {
                             <img src={location.state[2].image} alt='' />
                           </div>
                           <div>
-                            <div className='location__name'>
-                              {location.state[2].name}
-                            </div>
-                            <div className='location__date'>
-                              {new Date(location.state[4]).toLocaleString(
-                                'default',
-                                dateOptions
-                              )}
-                            </div>
+                            <div className='location__name'>{location.state[2].name}</div>
+                            <div className='location__date'>{new Date(location.state[4]).toLocaleString('default', dateOptions)}</div>
                           </div>
                         </div>
                       ) : (
@@ -363,15 +315,8 @@ export const MainPage = () => {
                               <img src={tripFromImg} alt='' />
                             </div>
                             <div>
-                              <div className='trip__address_title'>
-                                {lastRace.from}
-                              </div>
-                              <div className='trip__address_date'>
-                                {new Date(lastRace.fromDate).toLocaleString(
-                                  'default',
-                                  dateOptions
-                                )}
-                              </div>
+                              <div className='trip__address_title'>{lastRace.from}</div>
+                              <div className='trip__address_date'>{new Date(lastRace.fromDate).toLocaleString('default', dateOptions)}</div>
                             </div>
                           </div>
 
@@ -380,15 +325,8 @@ export const MainPage = () => {
                               <img src={tripToImg} alt='' />
                             </div>
                             <div>
-                              <div className='trip__address_title'>
-                                {lastRace.to}
-                              </div>
-                              <div className='trip__address_date'>
-                                {new Date(lastRace.toDate).toLocaleString(
-                                  'default',
-                                  dateOptions
-                                )}
-                              </div>
+                              <div className='trip__address_title'>{lastRace.to}</div>
+                              <div className='trip__address_date'>{new Date(lastRace.toDate).toLocaleString('default', dateOptions)}</div>
                             </div>
                           </div>
                         </div>
@@ -400,9 +338,7 @@ export const MainPage = () => {
                             <div className='trip__img trip__img2'>
                               <img src={tripTimeImg} alt='' />
                             </div>
-                            <div className='trip__paytime_title'>
-                              Время в пути
-                            </div>
+                            <div className='trip__paytime_title'>Время в пути</div>
                           </div>
                           {location.state !== undefined ? (
                             <div>
@@ -421,27 +357,16 @@ export const MainPage = () => {
                             <div className='trip__img trip__img2'>
                               <img src={tripPayImg} alt='' />
                             </div>
-                            {location.state !== undefined ? (
-                              <div className='trip__paytime_title'>Тариф</div>
-                            ) : (
-                              <div className='trip__paytime_title'>
-                                К оплате
-                              </div>
-                            )}
+                            {location.state !== undefined ? <div className='trip__paytime_title'>Тариф</div> : <div className='trip__paytime_title'>К оплате</div>}
                           </div>
                           <div>
                             {location.state !== undefined ? (
-                              <div
-                                className='rate__title'
-                                style={{ margin: '0' }}>
+                              <div className='rate__title' style={{ margin: '0' }}>
                                 {location.state[3].name}
                               </div>
                             ) : (
                               <span className='trip__num'>
-                                {lastRace.pay}{' '}
-                                <span className='trip__symbol trip--rouble'>
-                                  ₽
-                                </span>
+                                {lastRace.pay} <span className='trip__symbol trip--rouble'>₽</span>
                               </span>
                             )}
                           </div>
@@ -451,32 +376,18 @@ export const MainPage = () => {
                     <div className='trip__moto'>
                       <div className='trip__title'>Мотоцикл</div>
                       <div className='moto__info'>
-                        <div className='moto__img'>
-                          {location.state !== undefined ? (
-                            <img src={location.state[1].image} />
-                          ) : (
-                            <img src={lastRace.moto.image} alt='' />
-                          )}
-                        </div>
+                        <div className='moto__img'>{location.state !== undefined ? <img src={location.state[1].image} /> : <img src={lastRace.moto.image} alt='' />}</div>
                         <div className='moto__group'>
                           <div className='moto__group--name'>
                             {location.state !== undefined ? (
                               <div>
-                                <div className='moto__title'>
-                                  {location.state[1].name}
-                                </div>
-                                <div className='moto__subtitle'>
-                                  {location.state[1].class.name}
-                                </div>
+                                <div className='moto__title'>{location.state[1].name}</div>
+                                <div className='moto__subtitle'>{location.state[1].class.name}</div>
                               </div>
                             ) : (
                               <div>
-                                <div className='moto__title'>
-                                  {lastRace.moto.name}
-                                </div>
-                                <div className='moto__subtitle'>
-                                  {lastRace.moto.class.name}
-                                </div>
+                                <div className='moto__title'>{lastRace.moto.name}</div>
+                                <div className='moto__subtitle'>{lastRace.moto.class.name}</div>
                               </div>
                             )}
                           </div>
@@ -486,21 +397,17 @@ export const MainPage = () => {
                               <div className='trip__img trip__img2'>
                                 <img src={racespeedImg} alt='' />
                               </div>
-                              <div className='trip__paytime_title'>
-                                Макс. скорость
-                              </div>
+                              <div className='trip__paytime_title'>Макс. скорость</div>
                             </div>
 
                             <div>
                               {location.state !== undefined ? (
                                 <span className='trip__num'>
-                                  {speed}{' '}
-                                  <span className='trip__symbol'>км/ч</span>
+                                  {speed} <span className='trip__symbol'>км/ч</span>
                                 </span>
                               ) : (
                                 <span className='trip__num'>
-                                  {lastRace.speed}{' '}
-                                  <span className='trip__symbol'>км/ч</span>
+                                  {lastRace.speed} <span className='trip__symbol'>км/ч</span>
                                 </span>
                               )}
                             </div>
@@ -511,15 +418,11 @@ export const MainPage = () => {
 
                     <div className='trip__group--btns'>
                       {location.state !== undefined ? (
-                        <button
-                          className='link--red'
-                          onClick={() => checkTime()}>
+                        <button className='link--red' onClick={() => checkTime()}>
                           Завершить
                         </button>
                       ) : (
-                        <button
-                          className='link green'
-                          onClick={() => setModalActive(true)}>
+                        <button className='link green' onClick={() => setModalActive(true)}>
                           Повторить
                         </button>
                       )}
@@ -535,20 +438,13 @@ export const MainPage = () => {
                   <div className='trip'>
                     <div className='trip__title'>Подробнее</div>
                     <div className='trip__address more__address'>
-                      <div
-                        className='trip__group'
-                        style={{ marginBottom: '25px' }}>
+                      <div className='trip__group' style={{ marginBottom: '25px' }}>
                         <div className='trip__img more--circle'>
                           <img src={tripFromImg} alt='' />
                         </div>
                         <div>
                           <div className='more__title'>{lastRace.from}</div>
-                          <div className='more__subtitle'>
-                            {new Date(lastRace.fromDate).toLocaleString(
-                              'default',
-                              dateOptions
-                            )}
-                          </div>
+                          <div className='more__subtitle'>{new Date(lastRace.fromDate).toLocaleString('default', dateOptions)}</div>
                         </div>
                       </div>
 
@@ -558,22 +454,16 @@ export const MainPage = () => {
                         </div>
                         <div>
                           <div className='more__title'>{lastRace.to}</div>
-                          <div className='more__subtitle'>
-                            {new Date(lastRace.toDate).toLocaleString(
-                              'default',
-                              dateOptions
-                            )}
-                          </div>
+                          <div className='more__subtitle'>{new Date(lastRace.toDate).toLocaleString('default', dateOptions)}</div>
                         </div>
                       </div>
 
-                      {lastRace.location.name !== 'Город' &&
-                        lastRace.location.name !== 'Загород' && (
-                          <div className='trip__address_location--image'>
-                            <img src={lastRace.location.image} alt='' />
-                            <div>{lastRace.location.name}</div>
-                          </div>
-                        )}
+                      {lastRace.location.name !== 'Город' && lastRace.location.name !== 'Загород' && (
+                        <div className='trip__address_location--image'>
+                          <img src={lastRace.location.image} alt='' />
+                          <div>{lastRace.location.name}</div>
+                        </div>
+                      )}
                     </div>
 
                     <div className='more__grid'>
@@ -583,9 +473,7 @@ export const MainPage = () => {
                         </div>
                         <div>
                           <div className='more__title'>Тариф</div>
-                          <div className='more__subtitle'>
-                            {lastRace.rate.name}
-                          </div>
+                          <div className='more__subtitle'>{lastRace.rate.name}</div>
                         </div>
                       </div>
 
@@ -595,9 +483,7 @@ export const MainPage = () => {
                         </div>
                         <div>
                           <div className='more__title'>Время поездки</div>
-                          <div className='more__subtitle'>
-                            {lastRace.time} мин
-                          </div>
+                          <div className='more__subtitle'>{lastRace.time} мин</div>
                         </div>
                       </div>
 
@@ -607,9 +493,7 @@ export const MainPage = () => {
                         </div>
                         <div>
                           <div className='more__title'>К оплате</div>
-                          <div className='more__subtitle'>
-                            {lastRace.pay} &#8381;
-                          </div>
+                          <div className='more__subtitle'>{lastRace.pay} &#8381;</div>
                         </div>
                       </div>
 
@@ -619,24 +503,16 @@ export const MainPage = () => {
                         </div>
                         <div>
                           <div className='more__title'>Макс. скорость</div>
-                          <div className='more__subtitle'>
-                            {lastRace.speed} км/ч
-                          </div>
+                          <div className='more__subtitle'>{lastRace.speed} км/ч</div>
                         </div>
                       </div>
                     </div>
 
-                    <div
-                      className='more__flex'
-                      style={{ marginBottom: '30px' }}>
+                    <div className='more__flex' style={{ marginBottom: '30px' }}>
                       <div className='more__flex_item'>
                         <div className='trip__title'>Характеристики</div>
-                        <div className='more__moto_name'>
-                          {lastRace.moto.name}
-                        </div>
-                        <div className='more__moto_class'>
-                          {lastRace.moto.class.name}
-                        </div>
+                        <div className='more__moto_name'>{lastRace.moto.name}</div>
+                        <div className='more__moto_class'>{lastRace.moto.class.name}</div>
                       </div>
                       <div className='more__flex_item'>
                         <div className='more__moto_img'>
@@ -651,12 +527,8 @@ export const MainPage = () => {
                           <img src={specs0} alt='' />
                         </div>
                         <div className='more__specs'>
-                          <div className='more__specs_title'>
-                            Объем двигателя:
-                          </div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[0]} см3
-                          </div>
+                          <div className='more__specs_title'>Объем двигателя:</div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[0]} см3</div>
                         </div>
                       </div>
 
@@ -666,9 +538,7 @@ export const MainPage = () => {
                         </div>
                         <div className='more__specs'>
                           <div className='more__specs_title'>Объем бака:</div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[3]} л.
-                          </div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[3]} л.</div>
                         </div>
                       </div>
 
@@ -678,9 +548,7 @@ export const MainPage = () => {
                         </div>
                         <div className='more__specs'>
                           <div className='more__specs_title'>Мощность:</div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[1]} л.с.
-                          </div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[1]} л.с.</div>
                         </div>
                       </div>
 
@@ -690,9 +558,7 @@ export const MainPage = () => {
                         </div>
                         <div className='more__specs'>
                           <div className='more__specs_title'>Масса:</div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[4]} кг
-                          </div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[4]} кг</div>
                         </div>
                       </div>
 
@@ -701,12 +567,8 @@ export const MainPage = () => {
                           <img src={specs2} alt='' />
                         </div>
                         <div className='more__specs'>
-                          <div className='more__specs_title'>
-                            Макс. скорость:
-                          </div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[2]} км/ч
-                          </div>
+                          <div className='more__specs_title'>Макс. скорость:</div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[2]} км/ч</div>
                         </div>
                       </div>
 
@@ -715,12 +577,8 @@ export const MainPage = () => {
                           <img src={specs5} alt='' />
                         </div>
                         <div className='more__specs'>
-                          <div className='more__specs_title'>
-                            Расход топлива:
-                          </div>
-                          <div className='more__specs__num'>
-                            {lastRace.moto.specs[5]} л. на 100 км
-                          </div>
+                          <div className='more__specs_title'>Расход топлива:</div>
+                          <div className='more__specs__num'>{lastRace.moto.specs[5]} л. на 100 км</div>
                         </div>
                       </div>
                     </div>
@@ -732,10 +590,7 @@ export const MainPage = () => {
                 )}
 
                 {location.state === undefined && (
-                  <Link
-                    to='/newtrip'
-                    className='link new green'
-                    style={{ marginTop: '20px' }}>
+                  <Link to='/newtrip' className='link new green' style={{ marginTop: '20px' }}>
                     Новая поездка
                   </Link>
                 )}
@@ -743,8 +598,7 @@ export const MainPage = () => {
             ) : (
               <>
                 <div className='trip--else'>
-                  Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку{' '}
-                  <span>"Новая поездка"</span>, чтобы погрузиться в мир драйва!
+                  Райдер, у тебя ещё не было ни одной поездки! Нажми кнопку <span>"Новая поездка"</span>, чтобы погрузиться в мир драйва!
                 </div>
                 <Link to='/newtrip' className='link new green'>
                   Новая поездка
@@ -753,29 +607,19 @@ export const MainPage = () => {
             )}
           </div>
           <SimpleModal active={modalActive} setActive={setModalActive}>
-            <div className='simpleModal__title'>
-              {location.state !== undefined
-                ? 'Вы уверены, что хотите завершить поездку?'
-                : 'Хотите повторить крайнюю поездку?'}
-            </div>
+            <div className='simpleModal__title'>{location.state !== undefined ? 'Вы уверены, что хотите завершить поездку?' : 'Хотите повторить крайнюю поездку?'}</div>
             <div className='simpleModal__btns'>
               {location.state !== undefined ? (
-                <button
-                  className='simpleModal__btn red'
-                  onClick={() => raceHandler()}>
+                <button className='simpleModal__btn red' onClick={() => raceHandler()}>
                   Завершить
                 </button>
               ) : (
-                <button
-                  className='simpleModal__btn green'
-                  onClick={() => setLocationState()}>
+                <button className='simpleModal__btn green' onClick={() => setLocationState()}>
                   Повторить
                 </button>
               )}
 
-              <button
-                className='simpleModal__btn'
-                onClick={() => setModalActive(false)}>
+              <button className='simpleModal__btn' onClick={() => setModalActive(false)}>
                 Отмена
               </button>
             </div>

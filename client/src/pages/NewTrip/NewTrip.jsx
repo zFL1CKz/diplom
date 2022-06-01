@@ -392,18 +392,39 @@ export const NewTrip = () => {
     }
   }, [token, request])
 
-  function startHandler() {
+  async function startHandler() {
     setShowError('')
 
     if (userPassport === undefined) {
       if (passportForm.seria.length !== 4 || passportForm.seria.indexOf('_') !== -1 || passportForm.number.length !== 6 || passportForm.number.indexOf('_') !== -1)
         return setShowError('Необходимо заполнить данные паспорта')
+    } else {
+      let reqObject = {
+        seria: passportForm.seria,
+        num: passportForm.number,
+      }
+      try {
+        let data = await request(
+          '/api/user/setpassport',
+          'POST',
+          { ...reqObject },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        )
+        getInfo()
+        console.log(data)
+      } catch (error) {
+        setShowError(error)
+      }
     }
 
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
 
     setSignatureImg(sigCanvas.current.toDataURL('image/png'))
-    console.log(sigCanvas.current.toDataURL('image/png'))
+
+    history.push('/main', [...chosen, String(new Date())])
+    // console.log(sigCanvas.current.toDataURL('image/png'))
 
     // setPassportInputDisabled(true)
 
