@@ -9,10 +9,18 @@ import specs5 from '../../img/specs/specs5.svg'
 
 import './SearchCard.scss'
 import '../../pages/MainPage/MainPage.scss'
+import { useHistory } from 'react-router-dom'
 
 export const SearchCard = ({ item }) => {
+  const history = useHistory()
+
   return (
-    <div className='search__item'>
+    <div
+      className='search__item'
+      onClick={() => {
+        const obj = [item.class, item]
+        history.push('/newtrip', obj)
+      }}>
       <div className='search__group'>
         <div>
           <div className='search__title'>{item.name}</div>

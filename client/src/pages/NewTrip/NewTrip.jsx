@@ -454,8 +454,10 @@ export const NewTrip = () => {
       setBodyTitle('Выберите класс мотоцикла')
     } else if (currentScreen === 2) {
       setBodyTitle('Выберите модель мотоцикла')
+      getMotos(chosen[0]._id)
     } else if (currentScreen === 3) {
       setBodyTitle('Выберите локацию')
+      getLocations(chosen[1])
     } else if (currentScreen === 4) {
       setBodyTitle('Выберите тариф')
       getRates()
