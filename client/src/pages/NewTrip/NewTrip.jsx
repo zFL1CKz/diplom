@@ -443,6 +443,9 @@ export const NewTrip = () => {
       }
     }
 
+    if (cardInfo === undefined && !validCard) return setShowError('Небходимо заполнить данные карты')
+    else cardHandler()
+
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
 
     setPassportInputDisabled(true)
@@ -691,46 +694,27 @@ export const NewTrip = () => {
                 </div>
 
                 <div className='payments__card'>
-                  <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
-                    <Tap />
-                  </div>
                   <div className='payments__group img--group'>
                     <img src={nfc} alt='' className='payments__img' />
                     <img src={chip} alt='' className='payments__img' />
                   </div>
 
-                  {cardInfo !== undefined ? (
-                    <div className='payments__info'>
-                      <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
-                        <img src={eye} alt='' />
-                      </div>
-                      <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
-                      <div className='payments__group jcsb'>
-                        <div className='payments__group'>
-                          <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
-                          <div className='payments__card_text payments--cvv'>***</div>
-                        </div>
-                        <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
-                      </div>
+                  <div className='payments__inputs'>
+                    <InputMask
+                      mask='9999 9999 9999 9999'
+                      maskPlaceholder=''
+                      name='number'
+                      onChange={cardInputHandler}
+                      className='payments__input'
+                      placeholder='Номер карты'
+                      autoComplete='cc-number'
+                      id='number'
+                    />
+                    <div className='payments__inputs_group'>
+                      <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardInputHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
+                      <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardInputHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
                     </div>
-                  ) : (
-                    <div className='payments__inputs'>
-                      <InputMask
-                        mask='9999 9999 9999 9999'
-                        maskPlaceholder=''
-                        name='number'
-                        onChange={cardInputHandler}
-                        className='payments__input'
-                        placeholder='Номер карты'
-                        autoComplete='cc-number'
-                        id='number'
-                      />
-                      <div className='payments__inputs_group'>
-                        <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardInputHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
-                        <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardInputHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </>
             )}
