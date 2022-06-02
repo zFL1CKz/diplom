@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import InputMask from 'react-input-mask'
-import axios from 'axios'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import { Loader } from '../../components/Loader/Loader'
@@ -36,7 +35,6 @@ export const NewTrip = () => {
   const [inputDisabled, setInputDisabled] = useState(false)
   const [passportInputDisabled, setPassportInputDisabled] = useState(false)
   const [showCard, setShowCard] = useState(false)
-  const [signatureImg, setSignatureImg] = useState('')
   const [userPassport, setUserPassport] = useState([])
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
@@ -394,8 +392,11 @@ export const NewTrip = () => {
     }
   }, [token, request])
 
-  async function setPassport(reqObject) {
-    console.log(reqObject)
+  async function setPassport() {
+    let reqObject = {
+      seria: passportForm.seria,
+      number: passportForm.number,
+    }
     try {
       await request(
         '/api/user/setpassport',
@@ -405,7 +406,6 @@ export const NewTrip = () => {
           Authorization: `Bearer ${token}`,
         }
       )
-      getInfo()
     } catch (error) {
       setShowError(error)
     }
@@ -414,49 +414,29 @@ export const NewTrip = () => {
   function startHandler() {
     setShowError('')
 
-    let reqObject = {
-      seria: passportForm.seria,
-      number: passportForm.number,
-    }
-
     if (userPassport === undefined) {
       if (passportForm.seria.length !== 4 || passportForm.seria.indexOf('_') !== -1 || passportForm.number.length !== 6 || passportForm.number.indexOf('_') !== -1)
         return setShowError('Необходимо заполнить данные паспорта')
       else {
-        setPassport(reqObject)
+        setPassport()
       }
     }
 
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
-    setSignatureImg(sigCanvas.current.toDataURL('image/png'))
-
-    // console.log(sigCanvas.current.toDataURL('image/png'))
 
     setPassportInputDisabled(true)
-    history.push('/main', [...chosen, String(new Date())])
-
-    // let dot = '.'
-    //   setShowError('Идет проверка ВУ, пожалуйста, подождите.')
-    //   const timer = setInterval(() => {
-    //     if (dot >= '...') dot = ''
-    //     dot += '.'
-    //     setShowError('Идет проверка ВУ, пожалуйста, подождите' + dot)
-    //   }, 1000)
+    history.push('/main', [...chosen, String(new Date()), sigCanvas.current.toDataURL('image/png')])
   }
 
   useEffect(() => {
     if (currentScreen === 1) {
       setBodyTitle('Выберите класс мотоцикла')
-      setIsReady(false)
     } else if (currentScreen === 2) {
       setBodyTitle('Выберите модель мотоцикла')
-      setIsReady(false)
     } else if (currentScreen === 3) {
       setBodyTitle('Выберите локацию')
-      setIsReady(false)
     } else if (currentScreen === 4) {
       setBodyTitle('Выберите тариф')
-      setIsReady(false)
       getRates()
     } else if (currentScreen === 5) {
       setBodyTitle('Начало поездки')

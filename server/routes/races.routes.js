@@ -37,18 +37,7 @@ router.get('/allraces', auth, async (req, res) => {
 
 router.post('/setrace', auth, async (req, res) => {
   try {
-    const {
-      motoId,
-      locationId,
-      rateId,
-      time,
-      pay,
-      fromDate,
-      toDate,
-      speed,
-      from,
-      to,
-    } = req.body
+    const { motoId, locationId, rateId, time, pay, fromDate, toDate, speed, from, to, signature } = req.body
     const race = new Races({
       owner: req.user.userId,
       moto: motoId,
@@ -61,6 +50,7 @@ router.post('/setrace', auth, async (req, res) => {
       speed: speed,
       from: from,
       to: to,
+      ownerSignature: signature,
     })
 
     await race.save()

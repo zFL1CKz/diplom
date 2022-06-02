@@ -2,6 +2,7 @@ const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
   owner: { type: Types.ObjectId, ref: 'User' },
+  ownerSignature: { type: String },
   moto: { type: Types.ObjectId, ref: 'Moto' },
   from: { type: String },
   fromDate: { type: Date },

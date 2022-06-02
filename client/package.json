@@ -20,6 +20,7 @@
     "react-signature-canvas": "^1.0.5",
     "sass": "^1.49.9",
     "sweetalert": "^2.1.2",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
