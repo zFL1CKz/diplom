@@ -13,7 +13,7 @@ export const RentContract = () => {
       <header className='header'>
         <div
           onClick={() => {
-            if (Object.keys(location.state).length > 0) {
+            if (location.state !== undefined) {
               history.push('/newtrip', location.state)
             } else {
               history.goBack()
