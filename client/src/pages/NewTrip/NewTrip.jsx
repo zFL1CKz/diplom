@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import binking from 'binking'
 import InputMask from 'react-input-mask'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
@@ -10,6 +11,10 @@ import { RateCard } from '../../components/Cards/RateCard'
 import { Tap } from '../../components/Tap/Tap'
 import SignaturePad from 'react-signature-canvas'
 
+import cardMir from '../../img/icons/mir-logo.svg'
+import chip from '../../img/icons/chip.svg'
+import nfc from '../../img/icons/nfc.svg'
+import eye from '../../img/icons/eye.svg'
 import logo from '../../img/icons/small--logo.svg'
 
 import '../ProfilePage/ProfilePage.scss'
@@ -39,6 +44,17 @@ export const NewTrip = () => {
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
+  const [cardInfo, setCardInfo] = useState(undefined)
+  const [cardView, setCardView] = useState(false)
+  const [validCard, setValidCard] = useState(false)
+
+  const [cardForm, setCardForm] = useState({
+    number: '',
+    date: '',
+    cvv: '',
+    alias: null,
+  })
+
   const [form, setForm] = useState({
     fio: '',
     date: '',
@@ -62,6 +78,10 @@ export const NewTrip = () => {
 
   const passportHandler = (e) => {
     setPassportForm({ ...passportForm, [e.target.name]: e.target.value })
+  }
+
+  const cardInputHandler = (e) => {
+    setCardForm({ ...cardForm, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
@@ -186,6 +206,7 @@ export const NewTrip = () => {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setUserPassport(res.passport)
+        setCardInfo(res.card)
       })
     } catch (error) {
       console.log(error)
@@ -447,6 +468,65 @@ export const NewTrip = () => {
     getClasses()
   }, [getClasses])
 
+  useEffect(() => {
+    setShowError('')
+    setTimeout(() => {
+      if (cardForm.number.split(' ').join('').length === 16 && cardForm.date.split('/').join('').length === 4 && cardForm.cvv.length === 3) {
+        setValidCard(true)
+      } else {
+        if (cardInfo === undefined) {
+          if (cardForm.number.split(' ').join('').length !== 16) document.querySelector('#number').focus()
+          else if (cardForm.date.split('/').join('').length !== 4) document.querySelector('#date').focus()
+          else document.querySelector('#cvv').focus()
+          setValidCard(false)
+        }
+      }
+    }, 0)
+  }, [cardForm])
+
+  function cardHandler() {
+    setShowError('')
+    binking.setDefaultOptions({
+      strategy: 'api',
+      apiKey: '78ba5ae02f023b053421e7f3cf9edc2f',
+    })
+    let cardDate = cardForm.date.split('/')
+    if (binking.validate(cardForm.number, cardDate[0], cardDate[1], cardForm.cvv).hasErrors) setShowError('Введите корректные данные карты')
+    else {
+      let dot = '.'
+      setShowError('Идет проверка карты, пожалуйста, подождите.')
+      const timer = setInterval(() => {
+        if (dot >= '...') dot = ''
+        dot += '.'
+        setShowError('Идет проверка карты, пожалуйста, подождите' + dot)
+      }, 1000)
+      binking(cardForm.number).then(async (data) => {
+        clearInterval(timer)
+        setShowError('')
+        try {
+          let reqObject = {
+            num: cardForm.number,
+            date: cardForm.date,
+            cvv: cardForm.cvv,
+            alias: data.brandLogoOriginalSvg,
+          }
+          await request(
+            '/api/user/setcard',
+            'POST',
+            { ...reqObject },
+            {
+              Authorization: `Bearer ${token}`,
+            }
+          )
+          setValidCard(false)
+          getInfo()
+        } catch (error) {
+          setShowError(error)
+        }
+      })
+    }
+  }
+
   if (!isReady) {
     return <Loader />
   } else {
@@ -601,6 +681,58 @@ export const NewTrip = () => {
                 </div>
               </>
             )}
+
+            {cardInfo === undefined && (
+              <>
+                <div className='passport__title'>
+                  Для оплаты поедки заполните, пожалуйста, <span>данные карты</span>
+                </div>
+
+                <div className='payments__card'>
+                  <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
+                    <Tap />
+                  </div>
+                  <div className='payments__group img--group'>
+                    <img src={nfc} alt='' className='payments__img' />
+                    <img src={chip} alt='' className='payments__img' />
+                  </div>
+
+                  {cardInfo !== undefined ? (
+                    <div className='payments__info'>
+                      <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
+                        <img src={eye} alt='' />
+                      </div>
+                      <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
+                      <div className='payments__group jcsb'>
+                        <div className='payments__group'>
+                          <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
+                          <div className='payments__card_text payments--cvv'>***</div>
+                        </div>
+                        <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='payments__inputs'>
+                      <InputMask
+                        mask='9999 9999 9999 9999'
+                        maskPlaceholder=''
+                        name='number'
+                        onChange={cardInputHandler}
+                        className='payments__input'
+                        placeholder='Номер карты'
+                        autoComplete='cc-number'
+                        id='number'
+                      />
+                      <div className='payments__inputs_group'>
+                        <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardInputHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
+                        <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardInputHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+
             <div className='passport__title'>
               Для согласия с условиями{' '}
               <Link
@@ -610,8 +742,9 @@ export const NewTrip = () => {
                 }}>
                 договора аренды мототехники
               </Link>{' '}
-              требуется электронная подпись (поле ниже).
+              требуется <span>электронная подпись</span> (поле ниже).
             </div>
+
             <div className='canvas'>
               <SignaturePad
                 penColor='#666592'

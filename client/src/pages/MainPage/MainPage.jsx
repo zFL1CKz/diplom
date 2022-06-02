@@ -106,6 +106,7 @@ export const MainPage = () => {
       speed: speed,
       from: from || null,
       to: to || null,
+      signature: location.state[5],
     }
 
     try {
