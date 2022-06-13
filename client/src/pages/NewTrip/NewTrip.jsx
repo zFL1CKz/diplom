@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import binking from 'binking'
 import InputMask from 'react-input-mask'
+import QRCode from 'qrcode.react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import { Loader } from '../../components/Loader/Loader'
@@ -11,10 +12,8 @@ import { RateCard } from '../../components/Cards/RateCard'
 import { Tap } from '../../components/Tap/Tap'
 import SignaturePad from 'react-signature-canvas'
 
-import cardMir from '../../img/icons/mir-logo.svg'
 import chip from '../../img/icons/chip.svg'
 import nfc from '../../img/icons/nfc.svg'
-import eye from '../../img/icons/eye.svg'
 import logo from '../../img/icons/small--logo.svg'
 
 import '../ProfilePage/ProfilePage.scss'
@@ -41,11 +40,12 @@ export const NewTrip = () => {
   const [passportInputDisabled, setPassportInputDisabled] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [userPassport, setUserPassport] = useState([])
+  const [userLicense, setUserLicense] = useState([])
+  const [userSignature, setUserSignature] = useState()
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
   const [cardInfo, setCardInfo] = useState(undefined)
-  const [cardView, setCardView] = useState(false)
   const [validCard, setValidCard] = useState(false)
 
   const [cardForm, setCardForm] = useState({
@@ -84,11 +84,20 @@ export const NewTrip = () => {
     setCardForm({ ...cardForm, [e.target.name]: e.target.value })
   }
 
+  function isLicense() {
+    if (userLicense !== undefined) return { Номер: userLicense.licenseNum, Категории: userLicense.licenseCat, Дата: userLicense.licenseDate }
+    else return 'нет'
+  }
+
   useEffect(() => {
     setFormFocus(false)
     if (form.fio !== '' || (form.date.indexOf('_') === -1 && form.date.length === 10 && form.num.indexOf('_') === -1 && form.num.length === 11)) setFormFocus(true)
     else setFormFocus(false)
   }, [form])
+
+  useEffect(() => {
+    setShowError('')
+  }, [currentScreen])
 
   async function profileHandler() {
     setFormFocus(false)
@@ -206,6 +215,7 @@ export const NewTrip = () => {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setUserPassport(res.passport)
+        setUserLicense(res.license)
         setCardInfo(res.card)
       })
     } catch (error) {
@@ -443,13 +453,14 @@ export const NewTrip = () => {
       }
     }
 
-    if (cardInfo === undefined && !validCard) return setShowError('Небходимо заполнить данные карты')
-    else cardHandler()
+    let card = cardHandler()
+    if (card === false && cardInfo === undefined) return setShowError('Введите корректные данные карты')
 
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
 
     setPassportInputDisabled(true)
-    history.push('/main', [...chosen, String(new Date()), sigCanvas.current.toDataURL('image/png')])
+    setCurrentScreen(6)
+    setUserSignature(sigCanvas.current.toDataURL('image/png'))
   }
 
   useEffect(() => {
@@ -465,6 +476,8 @@ export const NewTrip = () => {
       setBodyTitle('Выберите тариф')
       getRates()
     } else if (currentScreen === 5) {
+      setBodyTitle('Начало поездки')
+    } else if (currentScreen === 6) {
       setBodyTitle('Начало поездки')
     }
   }, [currentScreen])
@@ -496,7 +509,7 @@ export const NewTrip = () => {
       apiKey: '78ba5ae02f023b053421e7f3cf9edc2f',
     })
     let cardDate = cardForm.date.split('/')
-    if (binking.validate(cardForm.number, cardDate[0], cardDate[1], cardForm.cvv).hasErrors) setShowError('Введите корректные данные карты')
+    if (binking.validate(cardForm.number, cardDate[0], cardDate[1], cardForm.cvv).hasErrors) return false
     else {
       let dot = '.'
       setShowError('Идет проверка карты, пожалуйста, подождите.')
@@ -524,10 +537,10 @@ export const NewTrip = () => {
             }
           )
           setValidCard(false)
-          getInfo()
         } catch (error) {
           setShowError(error)
         }
+        return true
       })
     }
   }
@@ -663,7 +676,6 @@ export const NewTrip = () => {
                     onClick={() => {
                       setChosen([...chosen, item])
                       setCurrentScreen(5)
-                      // history.push('/main', [...chosen, item, String(new Date())])
                     }}>
                     <RateCard item={item} />
                   </div>
@@ -745,12 +757,45 @@ export const NewTrip = () => {
             </div>
 
             <button className='canvas__btn save' onClick={startHandler}>
-              Начать поездку
+              Далее
             </button>
 
             <div className='error' style={{ marginTop: '10px' }}>
               {showError}
             </div>
+          </>
+        )}
+
+        {currentScreen === 6 && (
+          <>
+            <div className='qrcode'>
+              <div className='qrcode__title'>
+                Для начала поездки Вам необходимо явиться в любую точку аренды MotoSoul и <span>показать сотруднику этот QR-код</span>
+              </div>
+
+              <QRCode
+                className='qrcode__code'
+                fgColor='#666592'
+                bgColor='transparent'
+                renderAs='svg'
+                imageSettings={{ src: logo, excavate: true, width: 30, height: 25 }}
+                value={JSON.stringify({
+                  Класс: chosen[0].name,
+                  Мотоцикл: chosen[1].name,
+                  Локация: chosen[2].name,
+                  Тариф: chosen[3].name,
+                  Пользователь: { id: JSON.parse(localStorage.getItem('userData')).userId, Паспорт: { Серия: userPassport.seria, Номер: userPassport.number }, ВУ: isLicense() },
+                })}
+              />
+              <iframe
+                src='https://yandex.ru/map-widget/v1/?um=constructor%3Abefc8633814c2e8e4a8758b8675eba77d157dd3318938640f7f8bd1eec612a9d&amp;source=constructor'
+                width='100%'
+                height='250'
+                frameborder='0'></iframe>
+            </div>
+            <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature])}>
+              Начать поездку
+            </button>
           </>
         )}
 

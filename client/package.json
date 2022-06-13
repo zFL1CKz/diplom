@@ -12,6 +12,7 @@
     "cheerio": "^1.0.0-rc.10",
     "framer-motion": "^6.3.4",
     "http-proxy-middleware": "^2.0.3",
+    "qrcode.react": "^3.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-input-mask": "^3.0.0-alpha.2",
