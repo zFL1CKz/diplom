@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Profile } from '../../components/Profile/Profile'
 import { Search } from '../../components/Search/Search'
 import { AuthContext } from '../../context/AuthContext'
@@ -35,6 +35,7 @@ export const MainPage = () => {
   const { token } = useContext(AuthContext)
   const { request } = useHttp()
   let location = useLocation()
+  const history = useHistory()
   const [lastRace, setLastRace] = useState([])
   const [timeError, setTimeError] = useState([])
   const [motos, setMotos] = useState([])
@@ -134,6 +135,11 @@ export const MainPage = () => {
       checkSpeed(location.state[1].specs[2])
     }
   }, [location.state, minutes])
+
+  function repeatHandler() {
+    const obj = [lastRace.moto.class, lastRace.moto, lastRace.location, lastRace.rate]
+    history.push('/newtrip', obj)
+  }
 
   function checkSpeed(max) {
     let min = 20
@@ -615,7 +621,7 @@ export const MainPage = () => {
                   Завершить
                 </button>
               ) : (
-                <button className='simpleModal__btn green' onClick={() => setLocationState()}>
+                <button className='simpleModal__btn green' onClick={() => repeatHandler()}>
                   Повторить
                 </button>
               )}

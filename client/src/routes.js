@@ -12,6 +12,8 @@ import { Contract } from './pages/AboutPage/Contract'
 import { UserAgreement } from './pages/AboutPage/UserAgreement'
 import { Privacy } from './pages/AboutPage/Privacy'
 import { RentContract } from './pages/AboutPage/RentContract'
+import { RacePage } from './pages/RacePage/RacePage'
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage'
 
 export const useRoutes = (isAuth) => {
   if (isAuth) {
@@ -44,7 +46,12 @@ export const useRoutes = (isAuth) => {
         <Route path='/terms/user-agreement' exact>
           <UserAgreement />
         </Route>
-        <Redirect to='/main' />
+        <Route path='/race/:id'>
+          <RacePage />
+        </Route>
+        <Route path='*'>
+          <NotFoundPage />
+        </Route>
       </Switch>
     )
   }
@@ -75,7 +82,7 @@ export const useRoutes = (isAuth) => {
       <Route path='/terms/user-agreement' exact>
         <UserAgreement />
       </Route>
-      <Redirect to='/login' />
+      {/* <Redirect to='/login' /> */}
     </Switch>
   )
 }

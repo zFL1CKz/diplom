@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Search.scss'
 
 export const Search = ({ onChange }) => {
@@ -8,12 +8,7 @@ export const Search = ({ onChange }) => {
 
   return (
     <div className='search'>
-      <input
-        className='input'
-        type='text'
-        onChange={searchHandler}
-        placeholder='Поиск...'
-      />
+      <input className='input' type='text' onChange={searchHandler} placeholder='Поиск...' />
     </div>
   )
 }

@@ -41,7 +41,8 @@ export const NewTrip = () => {
   const [showCard, setShowCard] = useState(false)
   const [userPassport, setUserPassport] = useState([])
   const [userLicense, setUserLicense] = useState([])
-  const [userSignature, setUserSignature] = useState()
+  const [userSignature, setUserSignature] = useState('')
+  const [currentRaceId, setCurrentRaceId] = useState('')
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
@@ -82,11 +83,6 @@ export const NewTrip = () => {
 
   const cardInputHandler = (e) => {
     setCardForm({ ...cardForm, [e.target.name]: e.target.value })
-  }
-
-  function isLicense() {
-    if (userLicense !== undefined) return { Номер: userLicense.licenseNum, Категории: userLicense.licenseCat, Дата: userLicense.licenseDate }
-    else return 'нет'
   }
 
   useEffect(() => {
@@ -442,6 +438,29 @@ export const NewTrip = () => {
     }
   }
 
+  async function setCurrentRace() {
+    let reqObject = {
+      moto: chosen[1]._id,
+      location: chosen[2]._id,
+      rate: chosen[3]._id,
+      signature: sigCanvas.current.getTrimmedCanvas().toDataURL('image/png'),
+    }
+    try {
+      let raceId = await request(
+        '/api/races/setcurrentrace',
+        'POST',
+        { ...reqObject },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      )
+      setCurrentRaceId(raceId)
+      setIsReady(true)
+    } catch (error) {
+      setShowError(error)
+    }
+  }
+
   function startHandler() {
     setShowError('')
 
@@ -459,8 +478,10 @@ export const NewTrip = () => {
     if (sigCanvas.current.isEmpty()) return setShowError('Необходимо оставить подпись')
 
     setPassportInputDisabled(true)
+    setUserSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png'))
+    setIsReady(false)
     setCurrentScreen(6)
-    setUserSignature(sigCanvas.current.toDataURL('image/png'))
+    setCurrentRace()
   }
 
   useEffect(() => {
@@ -556,12 +577,12 @@ export const NewTrip = () => {
               if (currentScreen === 1) {
                 setChosen([])
                 history.goBack()
-              } else {
+              } else if (currentScreen > 1 && currentScreen <= 5) {
                 let arr = chosen
                 arr = arr.slice(0, -1)
                 setChosen(arr)
                 setCurrentScreen(currentScreen - 1)
-              }
+              } else setCurrentScreen(currentScreen - 1)
             }}>
             <Back />
           </div>
@@ -778,19 +799,13 @@ export const NewTrip = () => {
                 fgColor='#666592'
                 bgColor='transparent'
                 renderAs='svg'
-                imageSettings={{ src: logo, excavate: true, width: 30, height: 25 }}
-                value={JSON.stringify({
-                  Класс: chosen[0].name,
-                  Мотоцикл: chosen[1].name,
-                  Локация: chosen[2].name,
-                  Тариф: chosen[3].name,
-                  Пользователь: { id: JSON.parse(localStorage.getItem('userData')).userId, Паспорт: { Серия: userPassport.seria, Номер: userPassport.number }, ВУ: isLicense() },
-                })}
+                imageSettings={{ src: logo, excavate: true, width: 25, height: 20 }}
+                value={`http://192.168.0.15:3000/race/${currentRaceId}`}
               />
               <iframe
                 src='https://yandex.ru/map-widget/v1/?um=constructor%3Abefc8633814c2e8e4a8758b8675eba77d157dd3318938640f7f8bd1eec612a9d&amp;source=constructor'
                 width='100%'
-                height='250'
+                height='200'
                 frameborder='0'></iframe>
             </div>
             <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature])}>

@@ -80,4 +80,19 @@ router.post('/setcurrentrace', auth, async (req, res) => {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
   }
 })
+
+router.get('/getcurrentrace/:id', async (req, res) => {
+  try {
+    const race = await CurrentRace.findOne({ _id: req.params.id })
+      .populate('owner')
+      .populate('moto')
+      .populate({ path: 'moto', populate: { path: 'class' } })
+      .populate('location')
+      .populate('rate')
+    res.json(race)
+  } catch (error) {
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
+  }
+})
+
 module.exports = router
