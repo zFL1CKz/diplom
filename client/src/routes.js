@@ -52,6 +52,7 @@ export const useRoutes = (isAuth) => {
         <Route path='*'>
           <NotFoundPage />
         </Route>
+        <Redirect to='/main' />
       </Switch>
     )
   }
@@ -81,6 +82,12 @@ export const useRoutes = (isAuth) => {
       </Route>
       <Route path='/terms/user-agreement' exact>
         <UserAgreement />
+      </Route>
+      <Route path='/race/:id'>
+        <RacePage />
+      </Route>
+      <Route path='*'>
+        <NotFoundPage />
       </Route>
       {/* <Redirect to='/login' /> */}
     </Switch>

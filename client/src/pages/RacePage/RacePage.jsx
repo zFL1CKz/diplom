@@ -15,6 +15,7 @@ import profileImg from '../../img/icons/profile.svg'
 import logo from '../../img/icons/small--logo.svg'
 import '../MainPage/MainPage.scss'
 import './RacePage.scss'
+import { Back } from '../../components/Back/Back'
 
 export const RacePage = () => {
   const [isReady, setIsReady] = useState(false)
@@ -47,21 +48,21 @@ export const RacePage = () => {
   } else {
     return (
       <div className='container'>
-        <img src={logo} alt='logo' className='race__logo' />
+        <header className='header'>
+          <div
+            onClick={() => {
+              history.push('/main')
+            }}>
+            <Back />
+          </div>
+          <div className='body__title' style={{ margin: '0 auto' }}>
+            Информация о поездке
+          </div>
+          <img src={logo} alt='logo' />
+        </header>
         <SearchCard item={race.moto} />
 
-        <div className='race__group mb20'>
-          <div className='race__group'>
-            <div className='race__img'>
-              <img src={tripToImg} alt='' />
-            </div>
-            <div className='race__text'>{race.location.name}</div>
-          </div>
-
-          <img src={race.location.image} alt='' />
-        </div>
-
-        <div className='race__group mb20'>
+        <div className='race__group mb10'>
           <div className='race__group'>
             <div className='race__img'>
               <img src={tripPayImg} alt='' />
@@ -71,14 +72,14 @@ export const RacePage = () => {
           <div className='race__desc'>{race.rate.price.split(' (')[0]}</div>
         </div>
 
-        <div className='race__group mb20'>
+        <div className='race__group mb10'>
           <div className='race__group'>
             <div className='race__img'>
-              <img src={profileImg} alt='' />
+              <img src={tripToImg} alt='' />
             </div>
-            <div className='race__text'>Подпись</div>
+            <div className='race__text'>{race.location.name}</div>
           </div>
-          <img src={race.ownerSignature} alt='' className='race__signature' />
+          <img style={{ width: '10%' }} src={race.location.image} alt='' />
         </div>
       </div>
     )

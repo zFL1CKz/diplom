@@ -140,7 +140,7 @@ export const PaymentsPage = () => {
               <Back />
             </div>
             <div className='body__title' style={{ margin: '0 auto' }}>
-              Платежи
+              История поездок
             </div>
             <img src={logo} alt='logo' />
           </div>
