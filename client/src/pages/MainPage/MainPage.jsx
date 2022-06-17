@@ -97,9 +97,6 @@ export const MainPage = () => {
     }
 
     let reqObject = {
-      motoId: location.state[1]._id,
-      locationId: location.state[2]._id,
-      rateId: location.state[3]._id,
       time: minutes,
       pay: checkPay(),
       fromDate: new Date(location.state[4]).toISOString(),
@@ -107,13 +104,12 @@ export const MainPage = () => {
       speed: speed,
       from: from || null,
       to: to || null,
-      signature: location.state[5],
     }
 
     try {
       await request(
-        '/api/races/setrace',
-        'POST',
+        `/api/races/putrace/${location.state[6]}`,
+        'PUT',
         { ...reqObject },
         {
           Authorization: `Bearer ${token}`,

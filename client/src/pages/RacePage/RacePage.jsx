@@ -27,11 +27,12 @@ export const RacePage = () => {
 
   const getRace = useCallback(async () => {
     try {
-      await request(`/api/races/getcurrentrace/${raceId}`, 'GET', null, {
+      await request(`/api/races/getrace/${raceId}`, 'GET', null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
-        if (res === null) return history.push('/notfound')
+        if (res === null) return history.push('/')
         setRace(res)
+        console.log(res)
       })
       setIsReady(true)
     } catch (error) {
@@ -51,11 +52,11 @@ export const RacePage = () => {
         <header className='header'>
           <div
             onClick={() => {
-              history.push('/main')
+              history.goBack()
             }}>
             <Back />
           </div>
-          <div className='body__title' style={{ margin: '0 auto' }}>
+          <div className='body__title' style={{ textAlign: 'center' }}>
             Информация о поездке
           </div>
           <img src={logo} alt='logo' />

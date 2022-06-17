@@ -438,7 +438,7 @@ export const NewTrip = () => {
     }
   }
 
-  async function setCurrentRace() {
+  async function setRace() {
     let reqObject = {
       moto: chosen[1]._id,
       location: chosen[2]._id,
@@ -447,7 +447,7 @@ export const NewTrip = () => {
     }
     try {
       let raceId = await request(
-        '/api/races/setcurrentrace',
+        '/api/races/setrace',
         'POST',
         { ...reqObject },
         {
@@ -481,7 +481,7 @@ export const NewTrip = () => {
     setUserSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png'))
     setIsReady(false)
     setCurrentScreen(6)
-    setCurrentRace()
+    setRace()
   }
 
   useEffect(() => {
@@ -808,7 +808,7 @@ export const NewTrip = () => {
                 height='200'
                 frameborder='0'></iframe>
             </div>
-            <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature])}>
+            <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature, currentRaceId])}>
               Начать поездку
             </button>
           </>

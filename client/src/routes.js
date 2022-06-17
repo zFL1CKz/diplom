@@ -52,7 +52,7 @@ export const useRoutes = (isAuth) => {
         <Route path='*'>
           <NotFoundPage />
         </Route>
-        <Redirect to='/main' />
+        {/* <Redirect to='/main' /> */}
       </Switch>
     )
   }
