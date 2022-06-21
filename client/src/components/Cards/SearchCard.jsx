@@ -12,7 +12,6 @@ import '../../pages/MainPage/MainPage.scss'
 import { useHistory } from 'react-router-dom'
 
 export const SearchCard = ({ item }) => {
-  console.log(item)
   const history = useHistory()
 
   return (

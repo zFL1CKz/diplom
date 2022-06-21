@@ -4,6 +4,7 @@ const schema = new Schema({
   owner: { type: Types.ObjectId, ref: 'User' },
   ownerSignature: { type: String },
   moto: { type: Types.ObjectId, ref: 'Moto' },
+  status: {type: Boolean, default: false},
   from: { type: String },
   fromDate: { type: Date },
   to: { type: String },

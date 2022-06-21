@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { SearchCard } from '../../components/Cards/SearchCard'
 import { Loader } from '../../components/Loader/Loader'
 import { AuthContext } from '../../context/AuthContext'
@@ -24,6 +24,7 @@ export const RacePage = () => {
   const { request } = useHttp()
   const raceId = useParams().id
   const history = useHistory()
+  const location = useLocation()
 
   const getRace = useCallback(async () => {
     try {
@@ -32,7 +33,6 @@ export const RacePage = () => {
       }).then((res) => {
         if (res === null) return history.push('/')
         setRace(res)
-        console.log(res)
       })
       setIsReady(true)
     } catch (error) {
@@ -52,7 +52,12 @@ export const RacePage = () => {
         <header className='header'>
           <div
             onClick={() => {
-              history.goBack()
+              if(location.state !== undefined){
+                history.push({
+                  pathname: '/newtrip',
+                  state: location.state
+                })
+              } else history.goBack()
             }}>
             <Back />
           </div>
@@ -81,6 +86,16 @@ export const RacePage = () => {
             <div className='race__text'>{race.location.name}</div>
           </div>
           <img style={{ width: '10%' }} src={race.location.image} alt='' />
+        </div>
+
+        <div className='race__group mb10'>
+          <div className='race__group'>
+            <div className='race__img'>
+              <img src={profileImg} alt='' />
+            </div>
+            <div className='race__text'>Подпись</div>
+          </div>
+          <img style={{ width: '12%' }}  src={race.ownerSignature} alt='' />
         </div>
       </div>
     )

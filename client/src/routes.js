@@ -14,6 +14,7 @@ import { Privacy } from './pages/AboutPage/Privacy'
 import { RentContract } from './pages/AboutPage/RentContract'
 import { RacePage } from './pages/RacePage/RacePage'
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage'
+import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 
 export const useRoutes = (isAuth) => {
   if (isAuth) {
@@ -28,8 +29,8 @@ export const useRoutes = (isAuth) => {
         <Route path='/newtrip' exact>
           <NewTrip />
         </Route>
-        <Route path='/payments' exact>
-          <PaymentsPage />
+        <Route path='/history' exact>
+          <HistoryPage />
         </Route>
         <Route path='/terms' exact>
           <AboutPage />
@@ -50,9 +51,9 @@ export const useRoutes = (isAuth) => {
           <RacePage />
         </Route>
         <Route path='*'>
-          <NotFoundPage />
+          <MainPage />
         </Route>
-        {/* <Redirect to='/main' /> */}
+        <Redirect to='/main'/>
       </Switch>
     )
   }
@@ -87,9 +88,9 @@ export const useRoutes = (isAuth) => {
         <RacePage />
       </Route>
       <Route path='*'>
-        <NotFoundPage />
+        <AuthPage />
       </Route>
-      {/* <Redirect to='/login' /> */}
+      <Redirect to='/login' />
     </Switch>
   )
 }

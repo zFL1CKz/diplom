@@ -1,7 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
-import axios from 'axios'
-import cheerio from 'cheerio'
+
+import cardMir from '../../img/icons/mir-logo.svg'
+import chip from '../../img/icons/chip.svg'
+import nfc from '../../img/icons/nfc.svg'
+import eye from '../../img/icons/eye.svg'
+import binking from 'binking'
+
 
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
@@ -30,7 +35,35 @@ export const ProfilePage = () => {
   const [passFocus, setPassFocus] = useState(false)
   const [inputDisabled, setInputDisabled] = useState(false)
 
+  const [cardInfo, setCardInfo] = useState(undefined)
+  const [cardView, setCardView] = useState(false)
+  const [validCard, setValidCard] = useState(false)
+  const [cardError, setCardError] = useState('')
+
+  const getCard = useCallback(async () => {
+    try {
+      await request('/api/user/getcard', 'GET', null, {
+        Authorization: `Bearer ${token}`,
+      }).then((res) => {
+        if (Object.keys(res).length > 0) setCardInfo(res)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    setIsReady(true)
+  }, [request, token])
+
+  useEffect(() => {
+    getCard()
+  }, [getCard])
+
   const [form, setForm] = useState({
+    fio: '',
+    date: '',
+    num: '',
+  })
+
+  const [cardForm, setCardForm] = useState({
     fio: '',
     date: '',
     num: '',
@@ -48,6 +81,10 @@ export const ProfilePage = () => {
 
   const passHandler = (e) => {
     setPassForm({ ...passForm, [e.target.name]: e.target.value })
+  }
+
+  const cardFormHandler = (e) => {
+    setCardForm({ ...cardForm, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
@@ -84,6 +121,66 @@ export const ProfilePage = () => {
     passForm.confPass = ''
     setPassFocus(false)
     getInfo()
+  }
+
+  useEffect(() => {
+    setCardError('')
+    setTimeout(() => {
+      if (cardForm.number.split(' ').join('').length === 16 && cardForm.date.split('/').join('').length === 4 && cardForm.cvv.length === 3) {
+        setValidCard(true)
+      } else {
+        if (cardInfo === undefined) {
+          if (cardForm.number.split(' ').join('').length !== 16) document.querySelector('#number').focus()
+          else if (cardForm.date.split('/').join('').length !== 4) document.querySelector('#date').focus()
+          else document.querySelector('#cvv').focus()
+          setValidCard(false)
+        }
+      }
+    }, 0)
+  }, [cardForm])
+
+  function cardHandler() {
+    setCardError('')
+    binking.setDefaultOptions({
+      strategy: 'api',
+      apiKey: '78ba5ae02f023b053421e7f3cf9edc2f',
+    })
+    let cardDate = cardForm.date.split('/')
+    if (binking.validate(cardForm.number, cardDate[0], cardDate[1], cardForm.cvv).hasErrors) setCardError('Введите корректные данные карты')
+    else {
+      let dot = '.'
+      setCardError('Идет проверка карты, пожалуйста, подождите.')
+      const timer = setInterval(() => {
+        if (dot >= '...') dot = ''
+        dot += '.'
+        setCardError('Идет проверка карты, пожалуйста, подождите' + dot)
+      }, 1000)
+      binking(cardForm.number).then(async (data) => {
+        clearInterval(timer)
+        setCardError('')
+        try {
+          let reqObject = {
+            num: cardForm.number,
+            date: cardForm.date,
+            cvv: cardForm.cvv,
+            alias: data.brandLogoOriginalSvg,
+          }
+          await request(
+            '/api/user/setcard',
+            'POST',
+            { ...reqObject },
+            {
+              Authorization: `Bearer ${token}`,
+            }
+          )
+          setValidCard(false)
+          setIsReady(false)
+          getInfo()
+        } catch (error) {
+          setCardError(error)
+        }
+      })
+    }
   }
 
   const getInfo = useCallback(async () => {
@@ -285,6 +382,52 @@ export const ProfilePage = () => {
           </div>
 
           <div className='profile__block'>
+          <div className='payments__card'>
+            <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
+              <Tap />
+            </div>
+            <div className='payments__group img--group'>
+              <img src={nfc} alt='' className='payments__img' />
+              <img src={chip} alt='' className='payments__img' />
+            </div>
+
+            {cardInfo !== undefined ? (
+              <div className='payments__info'>
+                <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
+                  <img src={eye} alt='' />
+                </div>
+                <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
+                <div className='payments__group jcsb'>
+                  <div className='payments__group'>
+                    <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
+                    <div className='payments__card_text payments--cvv'>***</div>
+                  </div>
+                  <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
+                </div>
+              </div>
+            ) : (
+              <div className='payments__inputs'>
+                <InputMask
+                  mask='9999 9999 9999 9999'
+                  maskPlaceholder=''
+                  name='number'
+                  onChange={cardFormHandler}
+                  className='payments__input'
+                  placeholder='Номер карты'
+                  autoComplete='cc-number'
+                  id='number'
+                />
+                <div className='payments__inputs_group'>
+                  <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardFormHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
+                  <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardFormHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
+                </div>
+              </div>
+            )}
+          </div>
+          </div>
+          <div className='error'>{cardError}</div>
+
+          <div className='profile__block'>
             <div className='profile__title'>Ваш персональный рейтинг</div>
             <div className='profile__rating'>{info.rating} из 10</div>
             <div className='profile__rating_group'>{checkRating(info.rating)}</div>
@@ -308,7 +451,7 @@ export const ProfilePage = () => {
             <div className='profile__wrapper'>
               <Link
                 to={{
-                  pathname: '/payments',
+                  pathname: '/history',
                   state: info,
                 }}
                 className='profile__btn'>

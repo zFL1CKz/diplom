@@ -104,6 +104,7 @@ export const MainPage = () => {
       speed: speed,
       from: from || null,
       to: to || null,
+      status: true,
     }
 
     try {

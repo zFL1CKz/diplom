@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import { useHttp } from '../../hooks/http.hook'
 import { useMessage } from '../../hooks/message.hook'
@@ -11,11 +11,13 @@ export const RegResult = () => {
   document.title = 'Moto Soul | Подтверждение регистрации'
   const { loading, request, error, clearError } = useHttp()
   const message = useMessage()
+  const history = useHistory()
   const location = useLocation()
   const auth = useContext(AuthContext)
 
   const submitReg = async () => {
     const data = await request('/api/auth/register', 'POST', location.state)
+    history.replace()
     auth.login(data.token, data.userId)
   }
 

@@ -14,28 +14,17 @@ export const HistoryPage = () => {
   document.title = 'Moto Soul | История поездок'
 
   const { token } = useContext(AuthContext)
-  const auth = useAuth()
   const { request } = useHttp()
   const history = useHistory()
   const [isReady, setIsReady] = useState(false)
-  const [historyInfo, setHistoryInfo] = useState('')
   const [races, setRaces] = useState([])
 
   const getRaces = useCallback(async () => {
-    let dot = '.'
-    setHistoryInfo('Идет загрузка истории поездок, пожалуйста, подождите.')
-    const timer = setInterval(() => {
-      if (dot >= '...') dot = ''
-      dot += '.'
-      setHistoryInfo('Идет загрузка истории поездок, пожалуйста, подождите' + dot)
-    }, 1000)
-
     try {
       await request('/api/races/allraces', 'GET', null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setRaces(res)
-        clearInterval(timer)
       })
       setIsReady(true)
     } catch (error) {
@@ -47,23 +36,29 @@ export const HistoryPage = () => {
     getRaces()
   }, [getRaces])
 
-  return (
-    <>
-      {isReady ? (
-        <div className='container'>
-          {races.length > 0 ? (
-            <div className='races'>
-              {races.map((item, index) => (
-                <HistoryCard item={item} key={index} />
-              ))}
-            </div>
-          ) : (
-            <div className='races--else'>У тебя ещё не было ни одной поездки</div>
-          )}
+  if (!isReady) {
+    return <Loader />
+  } else {
+    return (    
+      <div className='container'>
+        <div className='header'>
+          <div onClick={() => history.goBack()}>
+            <Back />
+          </div>
+          <div className='body__title' style={{ margin: '0 auto' }}>
+            История поездок
+          </div>
+          <img src={logo} alt='logo' />
         </div>
-      ) : (
-        <div className='races--info'>{historyInfo}</div>
-      )}
-    </>
-  )
+        {races.length > 0 ? (
+          <div className='races'>
+            {races.map((item, index) => (
+              <HistoryCard item={item} key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className='races--else'>У Вас еще не было ни одной поездки</div>
+        )}
+      </div>
+    )}
 }

@@ -7,11 +7,9 @@ require('../models/Class')
 require('../models/Location')
 require('../models/Rate')
 
-const CurrentRace = require('../models/CurrentRace')
-
 router.get('/lastrace', auth, async (req, res) => {
   try {
-    const lastrace = await Races.findOne({ owner: req.user.userId })
+    const lastrace = await Races.findOne({ owner: req.user.userId, status: true })
       .sort({ $natural: -1 })
       .populate({ path: 'moto', populate: { path: 'class' } })
       .populate('location')
@@ -24,7 +22,7 @@ router.get('/lastrace', auth, async (req, res) => {
 
 router.get('/allraces', auth, async (req, res) => {
   try {
-    const races = await Races.find({ owner: req.user.userId })
+    const races = await Races.find({ owner: req.user.userId, status: true })
       .sort({ $natural: -1 })
       .populate({ path: 'moto', populate: { path: 'class' } })
       .populate('location')
@@ -57,7 +55,7 @@ router.post('/setrace', auth, async (req, res) => {
 
 router.put('/putrace/:id', auth, async (req, res) => {
   try {
-    const { time, pay, fromDate, toDate, speed, from, to } = req.body
+    const { time, pay, fromDate, toDate, speed, from, to, status } = req.body
     const race = await Races.findOne({ _id: req.params.id })
 
     race.fromDate = fromDate
@@ -67,6 +65,7 @@ router.put('/putrace/:id', auth, async (req, res) => {
     race.speed = speed
     race.from = from
     race.to = to
+    race.status = status
 
     await race.save()
 

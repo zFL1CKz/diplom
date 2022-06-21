@@ -46,6 +46,8 @@ export const NewTrip = () => {
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
+  console.log(chosen);
+
   const [cardInfo, setCardInfo] = useState(undefined)
   const [validCard, setValidCard] = useState(false)
 
@@ -800,8 +802,13 @@ export const NewTrip = () => {
                 bgColor='transparent'
                 renderAs='svg'
                 imageSettings={{ src: logo, excavate: true, width: 25, height: 20 }}
-                value={`http://192.168.0.15:3000/race/${currentRaceId}`}
+                value={`http://169.254.74.120:3000/race/${currentRaceId}`}
               />
+
+              <Link to={{
+                pathname: `/race/${currentRaceId}`,
+                state: chosen
+              }} className='qrcode__link'>Прочитать QR-код</Link>
               <iframe
                 src='https://yandex.ru/map-widget/v1/?um=constructor%3Abefc8633814c2e8e4a8758b8675eba77d157dd3318938640f7f8bd1eec612a9d&amp;source=constructor'
                 width='100%'
