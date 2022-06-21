@@ -118,9 +118,9 @@ export const RegisterPage = () => {
                 Уже есть аккаунт?&nbsp;&nbsp;
                 <Link to='/login'>Авторизация</Link>
               </p>
-              <Link to='/terms' className='register__link'>О компании "MotoSoul"</Link>
             </fieldset>
           </div>
+              <Link to='/terms' className='register__link'>О компании</Link>
           <div className='circle'></div>
         </div>
       </div>
