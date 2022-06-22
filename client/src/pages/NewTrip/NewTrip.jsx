@@ -800,7 +800,7 @@ export const NewTrip = () => {
                 bgColor='transparent'
                 renderAs='svg'
                 imageSettings={{ src: logo, excavate: true, width: 25, height: 20 }}
-                value={`http://169.254.74.120:3000/race/${currentRaceId}`}
+                value={`http://169.254.74.123:3000/race/${currentRaceId}`}
               />
 
               <Link

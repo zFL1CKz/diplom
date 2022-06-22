@@ -13,9 +13,9 @@ import racespeedImg from '../../img/icons/trip--speed.svg'
 import profileImg from '../../img/icons/profile.svg'
 
 import logo from '../../img/icons/small--logo.svg'
+import { Back } from '../../components/Back/Back'
 import '../MainPage/MainPage.scss'
 import './RacePage.scss'
-import { Back } from '../../components/Back/Back'
 
 export const RacePage = () => {
   const [isReady, setIsReady] = useState(false)
