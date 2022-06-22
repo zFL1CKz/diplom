@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import specs0 from '../../img/specs/specs0.svg'
 import specs1 from '../../img/specs/specs1.svg'
@@ -7,9 +8,8 @@ import specs3 from '../../img/specs/specs3.svg'
 import specs4 from '../../img/specs/specs4.svg'
 import specs5 from '../../img/specs/specs5.svg'
 
-import './SearchCard.scss'
 import '../../pages/MainPage/MainPage.scss'
-import { useHistory } from 'react-router-dom'
+import './SearchCard.scss'
 
 export const SearchCard = ({ item }) => {
   const history = useHistory()

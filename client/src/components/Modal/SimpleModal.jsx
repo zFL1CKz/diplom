@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './SimpleModal.scss'
 
 export const SimpleModal = ({ active, setActive, children }) => {

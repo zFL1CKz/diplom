@@ -4,16 +4,14 @@ import { SearchCard } from '../../components/Cards/SearchCard'
 import { Loader } from '../../components/Loader/Loader'
 import { AuthContext } from '../../context/AuthContext'
 import { useHttp } from '../../hooks/http.hook'
+import { Back } from '../../components/Back/Back'
 
-import tripFromImg from '../../img/icons/trip--from.svg'
 import tripToImg from '../../img/icons/trip--to.svg'
-import tripTimeImg from '../../img/icons/trip--time.svg'
 import tripPayImg from '../../img/icons/trip--pay.svg'
-import racespeedImg from '../../img/icons/trip--speed.svg'
 import profileImg from '../../img/icons/profile.svg'
 
 import logo from '../../img/icons/small--logo.svg'
-import { Back } from '../../components/Back/Back'
+
 import '../MainPage/MainPage.scss'
 import './RacePage.scss'
 
@@ -38,7 +36,7 @@ export const RacePage = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [token, request])
+  }, [token, request, history, raceId])
 
   useEffect(() => {
     getRace()

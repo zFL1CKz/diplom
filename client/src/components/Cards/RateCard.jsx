@@ -1,5 +1,7 @@
 import React from 'react'
+
 import payIcon from '../../img/icons/trip--pay.svg'
+
 import './RateCard.scss'
 
 export const RateCard = ({ item }) => {

@@ -15,7 +15,7 @@ export const RegisterPage = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const { loading, request, error, clearError } = useHttp()
+  const { request, error, clearError } = useHttp()
 
   const [inputChecked, setInputChecked] = useState(false)
 

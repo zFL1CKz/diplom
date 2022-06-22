@@ -1,4 +1,5 @@
 import React from 'react'
+
 import profile from '../../img/icons/profile.svg'
 
 import './Profile.scss'

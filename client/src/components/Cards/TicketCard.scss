@@ -1,10 +1,7 @@
 .ticket__item {
   background: #f4f1f2;
-  box-shadow: -4px 4px 8px rgb(220 217 218 / 20%),
-    4px -4px 8px rgb(220 217 218 / 20%), -4px -4px 8px rgb(255 255 255 / 90%),
-    4px 4px 10px rgb(220 217 218 / 90%),
-    inset 1px 1px 2px rgb(255 255 255 / 30%),
-    inset -1px -1px 2px rgb(220 217 218 / 50%);
+  box-shadow: -4px 4px 8px rgb(220 217 218 / 20%), 4px -4px 8px rgb(220 217 218 / 20%), -4px -4px 8px rgb(255 255 255 / 90%), 4px 4px 10px rgb(220 217 218 / 90%),
+    inset 1px 1px 2px rgb(255 255 255 / 30%), inset -1px -1px 2px rgb(220 217 218 / 50%);
   border-radius: 20px;
   padding: 18px 20px;
   margin-bottom: 10px;
@@ -61,11 +58,7 @@
   text-transform: uppercase;
 
   &.green {
-    background: linear-gradient(
-      133.34deg,
-      rgba(78, 244, 115, 0.7) 2.4%,
-      rgba(0, 166, 37, 0.7) 91.47%
-    );
+    background: linear-gradient(133.34deg, rgba(78, 244, 115, 0.7) 2.4%, rgba(0, 166, 37, 0.7) 91.47%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

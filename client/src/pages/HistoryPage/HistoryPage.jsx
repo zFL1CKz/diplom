@@ -4,7 +4,6 @@ import { Back } from '../../components/Back/Back'
 import { HistoryCard } from '../../components/Cards/HistoryCard'
 import { Loader } from '../../components/Loader/Loader'
 import { AuthContext } from '../../context/AuthContext'
-import { useAuth } from '../../hooks/auth.hook'
 import { useHttp } from '../../hooks/http.hook'
 
 import logo from '../../img/icons/small--logo.svg'
@@ -30,7 +29,7 @@ export const HistoryPage = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [token, request, races.length])
+  }, [token, request])
 
   useEffect(() => {
     getRaces()
@@ -39,7 +38,7 @@ export const HistoryPage = () => {
   if (!isReady) {
     return <Loader />
   } else {
-    return (    
+    return (
       <div className='container'>
         <div className='header'>
           <div onClick={() => history.goBack()}>
@@ -60,5 +59,6 @@ export const HistoryPage = () => {
           <div className='races--else'>У Вас еще не было ни одной поездки</div>
         )}
       </div>
-    )}
+    )
+  }
 }

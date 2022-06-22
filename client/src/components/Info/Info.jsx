@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import infoImg from '../../img/icons/info.svg'
+
 import { Back } from '../../components/Back/Back'
 import { Modal } from '../Modal/Modal'
+
+import infoImg from '../../img/icons/info.svg'
+
 import './Info.scss'
 
 import specs0 from '../../img/specs/specs0.svg'
@@ -46,10 +49,7 @@ export const Info = ({ currentScreen, item }) => {
       )}
 
       {currentScreen === 2 && (
-        <Modal
-          setActive={setModalActive}
-          active={modalActive}
-          currentScreen={currentScreen}>
+        <Modal setActive={setModalActive} active={modalActive} currentScreen={currentScreen}>
           <div className='modal__group'>
             <div onClick={() => setModalActive(false)}>
               <Back />
@@ -120,19 +120,14 @@ export const Info = ({ currentScreen, item }) => {
               </div>
               <div className='more__specs'>
                 <div className='more__specs_title'>Расход топлива:</div>
-                <div className='more__specs__num'>
-                  {item.specs[5]} л. на 100 км
-                </div>
+                <div className='more__specs__num'>{item.specs[5]} л. на 100 км</div>
               </div>
             </div>
           </div>
         </Modal>
       )}
       {currentScreen === 3 && (
-        <Modal
-          setActive={setModalActive}
-          active={modalActive}
-          currentScreen={currentScreen}>
+        <Modal setActive={setModalActive} active={modalActive} currentScreen={currentScreen}>
           <div className='modal__group'>
             <div onClick={() => setModalActive(false)}>
               <Back />

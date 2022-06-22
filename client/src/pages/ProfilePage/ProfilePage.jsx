@@ -7,7 +7,6 @@ import nfc from '../../img/icons/nfc.svg'
 import eye from '../../img/icons/eye.svg'
 import binking from 'binking'
 
-
 import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
@@ -137,7 +136,7 @@ export const ProfilePage = () => {
         }
       }
     }, 0)
-  }, [cardForm])
+  }, [cardForm, cardInfo])
 
   function cardHandler() {
     setCardError('')
@@ -382,48 +381,48 @@ export const ProfilePage = () => {
           </div>
 
           <div className='profile__block'>
-          <div className='payments__card'>
-            <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
-              <Tap />
-            </div>
-            <div className='payments__group img--group'>
-              <img src={nfc} alt='' className='payments__img' />
-              <img src={chip} alt='' className='payments__img' />
-            </div>
+            <div className='payments__card'>
+              <div className={validCard ? 'btn__tap active' : 'btn__tap'} onClick={cardHandler}>
+                <Tap />
+              </div>
+              <div className='payments__group img--group'>
+                <img src={nfc} alt='' className='payments__img' />
+                <img src={chip} alt='' className='payments__img' />
+              </div>
 
-            {cardInfo !== undefined ? (
-              <div className='payments__info'>
-                <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
-                  <img src={eye} alt='' />
-                </div>
-                <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
-                <div className='payments__group jcsb'>
-                  <div className='payments__group'>
-                    <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
-                    <div className='payments__card_text payments--cvv'>***</div>
+              {cardInfo !== undefined ? (
+                <div className='payments__info'>
+                  <div className={cardView ? 'payments__view active' : 'payments__view'} onClick={() => setCardView(!cardView)}>
+                    <img src={eye} alt='' />
                   </div>
-                  <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
+                  <div className='payments__number'>{cardView ? cardInfo.num : `**** **** **** ${cardInfo.num.slice(-4)}`}</div>
+                  <div className='payments__group jcsb'>
+                    <div className='payments__group'>
+                      <div className='payments__card_text payments--date'>{cardView ? cardInfo.date : '**/**'}</div>
+                      <div className='payments__card_text payments--cvv'>***</div>
+                    </div>
+                    <img src={cardInfo.alias !== null ? cardInfo.alias : cardMir} alt='' className='payments__alias' />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className='payments__inputs'>
-                <InputMask
-                  mask='9999 9999 9999 9999'
-                  maskPlaceholder=''
-                  name='number'
-                  onChange={cardFormHandler}
-                  className='payments__input'
-                  placeholder='Номер карты'
-                  autoComplete='cc-number'
-                  id='number'
-                />
-                <div className='payments__inputs_group'>
-                  <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardFormHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
-                  <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardFormHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
+              ) : (
+                <div className='payments__inputs'>
+                  <InputMask
+                    mask='9999 9999 9999 9999'
+                    maskPlaceholder=''
+                    name='number'
+                    onChange={cardFormHandler}
+                    className='payments__input'
+                    placeholder='Номер карты'
+                    autoComplete='cc-number'
+                    id='number'
+                  />
+                  <div className='payments__inputs_group'>
+                    <InputMask mask='99/99' maskPlaceholder='' name='date' onChange={cardFormHandler} className='payments__input' placeholder='Дата' autoComplete='cc-exp' id='date' />
+                    <InputMask type='password' mask='999' maskPlaceholder='' name='cvv' onChange={cardFormHandler} className='payments__input' placeholder='Код' autoComplete='cc-csc' id='cvv' />
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
           </div>
           <div className='error'>{cardError}</div>
 
@@ -458,13 +457,7 @@ export const ProfilePage = () => {
                 История поездок
               </Link>
 
-              <Link
-                to={{
-                  pathname: '/terms',
-                  state: info,
-                }}
-                style={{ marginTop: '10px' }}
-                className='profile__btn'>
+              <Link to='/terms' style={{ marginTop: '10px' }} className='profile__btn'>
                 О компании
               </Link>
             </div>

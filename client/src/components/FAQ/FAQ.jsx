@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Back } from '../Back/Back'
+
 import { FAQModal } from '../Modal/FAQModal'
+
 import './FAQ.scss'
 
 export const FAQ = () => {
@@ -38,11 +39,7 @@ export const FAQ = () => {
         <div className='faq__num'>3</div>
         <div className='faq__text'>Искусство управления мотоциклом</div>
       </div>
-      <FAQModal
-        setActive={setModalActive}
-        active={modalActive}
-        item={modalItem}
-      />
+      <FAQModal setActive={setModalActive} active={modalActive} item={modalItem} />
     </div>
   )
 }

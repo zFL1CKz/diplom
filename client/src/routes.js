@@ -6,14 +6,12 @@ import { RegResult } from './pages/AuthPage/RegResult'
 import { MainPage } from './pages/MainPage/MainPage'
 import { NewTrip } from './pages/NewTrip/NewTrip'
 import { ProfilePage } from './pages/ProfilePage/ProfilePage'
-import { PaymentsPage } from './pages/PaymentsPage/PaymentsPage'
 import { AboutPage } from './pages/AboutPage/AboutPage'
 import { Contract } from './pages/AboutPage/Contract'
 import { UserAgreement } from './pages/AboutPage/UserAgreement'
 import { Privacy } from './pages/AboutPage/Privacy'
 import { RentContract } from './pages/AboutPage/RentContract'
 import { RacePage } from './pages/RacePage/RacePage'
-import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage'
 import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 
 export const useRoutes = (isAuth) => {
@@ -53,7 +51,7 @@ export const useRoutes = (isAuth) => {
         <Route path='*'>
           <MainPage />
         </Route>
-        <Redirect to='/main'/>
+        <Redirect to='/main' />
       </Switch>
     )
   }

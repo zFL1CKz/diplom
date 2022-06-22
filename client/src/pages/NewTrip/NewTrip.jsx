@@ -40,14 +40,12 @@ export const NewTrip = () => {
   const [passportInputDisabled, setPassportInputDisabled] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [userPassport, setUserPassport] = useState([])
-  const [userLicense, setUserLicense] = useState([])
   const [userSignature, setUserSignature] = useState('')
   const [currentRaceId, setCurrentRaceId] = useState('')
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
   const [cardInfo, setCardInfo] = useState(undefined)
-  const [validCard, setValidCard] = useState(false)
 
   const [cardForm, setCardForm] = useState({
     number: '',
@@ -211,7 +209,6 @@ export const NewTrip = () => {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setUserPassport(res.passport)
-        setUserLicense(res.license)
         setCardInfo(res.card)
       })
     } catch (error) {
@@ -501,7 +498,7 @@ export const NewTrip = () => {
     } else if (currentScreen === 6) {
       setBodyTitle('Начало поездки')
     }
-  }, [currentScreen])
+  }, [currentScreen, chosen, getLocations, getMotos, getRates])
 
   useEffect(() => {
     getClasses()
@@ -510,18 +507,13 @@ export const NewTrip = () => {
   useEffect(() => {
     setShowError('')
     setTimeout(() => {
-      if (cardForm.number.split(' ').join('').length === 16 && cardForm.date.split('/').join('').length === 4 && cardForm.cvv.length === 3) {
-        setValidCard(true)
-      } else {
-        if (cardInfo === undefined) {
-          if (cardForm.number.split(' ').join('').length !== 16) document.querySelector('#number').focus()
-          else if (cardForm.date.split('/').join('').length !== 4) document.querySelector('#date').focus()
-          else document.querySelector('#cvv').focus()
-          setValidCard(false)
-        }
+      if (cardInfo === undefined) {
+        if (cardForm.number.split(' ').join('').length !== 16) document.querySelector('#number').focus()
+        else if (cardForm.date.split('/').join('').length !== 4) document.querySelector('#date').focus()
+        else document.querySelector('#cvv').focus()
       }
     }, 0)
-  }, [cardForm])
+  }, [cardForm, cardInfo])
 
   function cardHandler() {
     setShowError('')
@@ -557,7 +549,6 @@ export const NewTrip = () => {
               Authorization: `Bearer ${token}`,
             }
           )
-          setValidCard(false)
         } catch (error) {
           setShowError(error)
         }
@@ -812,25 +803,14 @@ export const NewTrip = () => {
                 Прочитать QR-код
               </Link>
               <iframe
+                title='Точки аренды'
                 src='https://yandex.ru/map-widget/v1/?um=constructor%3Abefc8633814c2e8e4a8758b8675eba77d157dd3318938640f7f8bd1eec612a9d&amp;source=constructor'
                 width='100%'
                 height='200'
                 frameborder='0'></iframe>
             </div>
-            {/* <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature, currentRaceId])}>
-              Начать поездку
-            </button> */}
           </>
         )}
-
-        {/* <div className='checkbox'>
-              <input id='checkbox' type='checkbox' defaultChecked={inputChecked} onChange={() => setInputChecked(!inputChecked)} />
-              <label htmlFor='checkbox'>
-                Прочитал <Link to='/terms/user-agreement'>пользовательское соглашение</Link> и согласен с условиями <Link to='/terms/privacy'>политики обработки персональных данных</Link>
-              </label>
-            </div>
-
-            <button disabled={!inputChecked}>Зарегистрироваться</button> */}
       </div>
     )
   }

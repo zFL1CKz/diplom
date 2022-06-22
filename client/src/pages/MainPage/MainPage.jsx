@@ -3,6 +3,13 @@ import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Profile } from '../../components/Profile/Profile'
 import { Search } from '../../components/Search/Search'
 import { AuthContext } from '../../context/AuthContext'
+import { SimpleModal } from '../../components/Modal/SimpleModal'
+import { SearchCard } from '../../components/Cards/SearchCard'
+import { useHttp } from '../../hooks/http.hook'
+import { Loader } from '../../components/Loader/Loader'
+import { Back } from '../../components/Back/Back'
+import { FAQ } from '../../components/FAQ/FAQ'
+
 import logo from '../../img/icons/small--logo.svg'
 
 import specs0 from '../../img/specs/specs0.svg'
@@ -18,17 +25,9 @@ import tripTimeImg from '../../img/icons/trip--time.svg'
 import tripPayImg from '../../img/icons/trip--pay.svg'
 import racespeedImg from '../../img/icons/trip--speed.svg'
 
-import { useHttp } from '../../hooks/http.hook'
-import { Loader } from '../../components/Loader/Loader'
-import { Back } from '../../components/Back/Back'
-import { FAQ } from '../../components/FAQ/FAQ'
-
 import addresses from '../../addresses.json'
 
 import './MainPage.scss'
-import { SimpleModal } from '../../components/Modal/SimpleModal'
-import { SearchCard } from '../../components/Cards/SearchCard'
-import { Title } from '../../components/Title/Title'
 
 export const MainPage = () => {
   document.title = 'Moto Soul | Главная'
@@ -39,9 +38,7 @@ export const MainPage = () => {
   const [lastRace, setLastRace] = useState([])
   const [timeError, setTimeError] = useState([])
   const [motos, setMotos] = useState([])
-  const [card, setCard] = useState([])
   const [isReady, setIsReady] = useState(false)
-  const [isReadySearching, setIsReadySearching] = useState(false)
   const [more, setMore] = useState(false)
   const [modalActive, setModalActive] = useState(false)
   const [isSearch, setIsSearch] = useState(false)
@@ -61,20 +58,6 @@ export const MainPage = () => {
   const searchHandler = (value) => {
     setSearchInput(value)
   }
-
-  const getCard = useCallback(async () => {
-    try {
-      await request('/api/user/getcard', 'GET', null, {
-        Authorization: `Bearer ${token}`,
-      }).then((res) => setCard(res))
-    } catch (error) {
-      console.log(error)
-    }
-  }, [token, request])
-
-  useEffect(() => {
-    getCard()
-  }, [getCard])
 
   useEffect(() => {
     if (searchInput.length > 1) setIsSearch(true)
@@ -127,22 +110,25 @@ export const MainPage = () => {
     }
   }
 
+  const checkSpeed = useCallback(
+    (max) => {
+      let min = 20
+      let curSpeed = Math.floor(Math.random() * (max - min + 1)) + min
+      if (curSpeed > speed) setSpeed(curSpeed)
+      else setSpeed(speed)
+    },
+    [speed]
+  )
+
   useEffect(() => {
     if (location.state !== undefined && minutes > 1) {
       checkSpeed(location.state[1].specs[2])
     }
-  }, [location.state, minutes])
+  }, [location.state, minutes, checkSpeed])
 
   function repeatHandler() {
     const obj = [lastRace.moto.class, lastRace.moto, lastRace.location, lastRace.rate]
     history.push('/newtrip', obj)
-  }
-
-  function checkSpeed(max) {
-    let min = 20
-    let curSpeed = Math.floor(Math.random() * (max - min + 1)) + min
-    if (curSpeed > speed) setSpeed(curSpeed)
-    else setSpeed(speed)
   }
 
   function checkPay() {
@@ -164,15 +150,6 @@ export const MainPage = () => {
     else setModalActive(true)
   }
 
-  function setLocationState() {
-    setModalActive(false)
-    setIsReady(false)
-    setMinutes(0)
-    setSpeed(0)
-    location.state = [lastRace.moto.class, lastRace.moto, lastRace.location, lastRace.rate, String(new Date())]
-    setIsReady(true)
-  }
-
   const getLastRace = useCallback(async () => {
     try {
       await request('/api/races/lastrace', 'GET', null, {
@@ -184,20 +161,18 @@ export const MainPage = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [token, request, lastRace.length])
+  }, [token, request])
 
   useEffect(() => {
     if (motos.length === 0) getLastRace()
-  }, [getLastRace])
+  }, [getLastRace, motos.length])
 
   const getMotos = useCallback(async () => {
-    setIsReadySearching(false)
     try {
       await request('/api/getallmotos', 'GET', null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setMotos(res)
-        setIsReadySearching(true)
       })
     } catch (error) {
       console.log(error)
@@ -380,7 +355,7 @@ export const MainPage = () => {
                     <div className='trip__moto'>
                       <div className='trip__title'>Мотоцикл</div>
                       <div className='moto__info'>
-                        <div className='moto__img'>{location.state !== undefined ? <img src={location.state[1].image} /> : <img src={lastRace.moto.image} alt='' />}</div>
+                        <div className='moto__img'>{location.state !== undefined ? <img src={location.state[1].image} alt='Мотоцикл' /> : <img src={lastRace.moto.image} alt='Мотоцикл' />}</div>
                         <div className='moto__group'>
                           <div className='moto__group--name'>
                             {location.state !== undefined ? (

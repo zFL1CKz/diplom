@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Info } from '../Info/Info'
 import './ChooseCard.scss'
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
+
 import logo from '../../img/icons/small--logo.svg'
 
 export const Contract = () => {

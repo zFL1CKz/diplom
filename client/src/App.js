@@ -2,7 +2,6 @@ import { useRoutes } from './routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useAuth } from './hooks/auth.hook'
 import { AuthContext } from './context/AuthContext'
-import './App.scss'
 
 function App() {
   const { token, login, logout, userId } = useAuth()
