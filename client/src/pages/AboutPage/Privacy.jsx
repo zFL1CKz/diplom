@@ -1,18 +1,21 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import logo from '../../img/icons/small--logo.svg'
 import './Terms.scss'
 
 export const Privacy = () => {
   const history = useHistory()
+  const location = useLocation()
 
   return (
     <div className='container'>
       <header className='header'>
         <div
           onClick={() => {
-            history.goBack()
+            if (location.state !== undefined) {
+              history.push('/register', location.state)
+            } else history.goBack()
           }}>
           <Back />
         </div>

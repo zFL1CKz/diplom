@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMessage } from '../../hooks/message.hook'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useHttp } from '../../hooks/http.hook'
 
 import logo from '../../img/icons/big--logo.svg'
@@ -13,6 +13,8 @@ export const RegisterPage = () => {
   document.title = 'Moto Soul | Регистрация'
   const message = useMessage()
   const history = useHistory()
+  const location = useLocation()
+
   const { loading, request, error, clearError } = useHttp()
 
   const [inputChecked, setInputChecked] = useState(false)
@@ -23,8 +25,8 @@ export const RegisterPage = () => {
   let [pass1, setPass1] = useState('password')
 
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: location.state?.email || '',
+    password: location.state?.password || '',
   })
 
   const changeHandler = (e) => {
@@ -76,10 +78,10 @@ export const RegisterPage = () => {
             <fieldset>
               <legend>Регистрация</legend>
 
-              <input className='input' type='text' name='email' onChange={changeHandler} placeholder='Электронная почта' />
+              <input className='input' type='text' name='email' onChange={changeHandler} placeholder='Электронная почта' value={form.email} />
 
               <div className='input__group'>
-                <input className='input' type={pass} name='password' onChange={changeHandler} placeholder='Пароль (более 6-ти символов)' />
+                <input className='input' type={pass} name='password' onChange={changeHandler} placeholder='Пароль (более 6-ти символов)' value={form.password} />
 
                 {!isPassView ? (
                   <div className='input__img' onClick={showPass}>
@@ -107,7 +109,22 @@ export const RegisterPage = () => {
               <div className='checkbox'>
                 <input id='checkbox' type='checkbox' defaultChecked={inputChecked} onChange={() => setInputChecked(!inputChecked)} />
                 <label htmlFor='checkbox'>
-                  Прочитал <Link to='/terms/user-agreement'>пользовательское соглашение</Link> и согласен с условиями <Link to='/terms/privacy'>политики обработки персональных данных</Link>
+                  Прочитал{' '}
+                  <Link
+                    to={{
+                      pathname: '/terms/user-agreement',
+                      state: form,
+                    }}>
+                    пользовательское соглашение
+                  </Link>{' '}
+                  и согласен с условиями{' '}
+                  <Link
+                    to={{
+                      pathname: '/terms/privacy',
+                      state: form,
+                    }}>
+                    политики обработки персональных данных
+                  </Link>
                 </label>
               </div>
 
@@ -120,7 +137,9 @@ export const RegisterPage = () => {
               </p>
             </fieldset>
           </div>
-              <Link to='/terms' className='register__link'>О компании</Link>
+          <Link to={{ pathname: '/terms', state: form }} className='register__link'>
+            О компании
+          </Link>
           <div className='circle'></div>
         </div>
       </div>

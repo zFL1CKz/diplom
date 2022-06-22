@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Back } from '../../components/Back/Back'
 import logo from '../../img/icons/small--logo.svg'
 import './Terms.scss'
@@ -8,13 +8,16 @@ import './AboutPage.scss'
 export const AboutPage = () => {
   document.title = 'Moto Soul | О компании'
   const history = useHistory()
+  const location = useLocation()
 
   return (
     <div className='container'>
       <header className='header'>
         <div
           onClick={() => {
-            history.goBack()
+            if (location.state !== undefined) {
+              history.push('/register', location.state)
+            } else history.goBack()
           }}>
           <Back />
         </div>
