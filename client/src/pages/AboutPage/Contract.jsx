@@ -128,7 +128,7 @@ export const Contract = () => {
           </div>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
-              В настоящем «Договоре Делимобиль» (далее - «Договор») и приложениях к нему используются следующие термины, имеющие определенное ниже значение.
+              В настоящем «Договоре MotoSoul» (далее - «Договор») и приложениях к нему используются следующие термины, имеющие определенное ниже значение.
             </span>
           </p>
           <p style={{ marginLeft: '0cm', textAlign: 'justify' }}>
@@ -145,14 +145,14 @@ export const Contract = () => {
             {/*[if !supportLists]*/}
             <span style={{ fontFamily: '"Times New Roman",serif' }}>1.2.&nbsp;&nbsp; </span>
             {/*[endif]*/}
-            <span style={{ fontFamily: '"Times New Roman",serif' }}>Сервис Делимобиль (Сервис) – программный комплекс, включающий в себя </span>
+            <span style={{ fontFamily: '"Times New Roman",serif' }}>Сервис MotoSoul (Сервис) – программный комплекс, включающий в себя </span>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>WEB</span>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>-интерфейс, размещенный в сети Интернет по адресу </span>
-            <a href='https://delimobil.ru'>
+            <a href='https://motosoul.ru'>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>https</span>://
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>delimobil</span>.<span style={{ fontFamily: '"Times New Roman",serif' }}>ru</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>motosoul</span>.<span style={{ fontFamily: '"Times New Roman",serif' }}>ru</span>
             </a>
-            <span style={{ fontFamily: '"Times New Roman",serif' }}>, а также Мобильное приложение Делимобиль, обеспечивающий:</span>
+            <span style={{ fontFamily: '"Times New Roman",serif' }}>, а также Мобильное приложение MotoSoul, обеспечивающий:</span>
           </p>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
@@ -249,7 +249,7 @@ export const Contract = () => {
             <span style={{ fontFamily: '"Times New Roman",serif' }}>1.9.&nbsp;&nbsp; </span>
             {/*[endif]*/}
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
-              Программное обеспечение Делимобиль – совокупность программных средств (в т.ч. Сайт, Мобильное приложение), обеспечивающих функционирование Сервиса.
+              Программное обеспечение MotoSoul – совокупность программных средств (в т.ч. Сайт, Мобильное приложение), обеспечивающих функционирование Сервиса.
             </span>
           </p>
           <p style={{ marginLeft: '0cm', textAlign: 'justify' }}>
@@ -265,10 +265,10 @@ export const Contract = () => {
             <span style={{ fontFamily: '"Times New Roman",serif' }}>1.11.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
             {/*[endif]*/}
             <span style={{ fontFamily: '"Times New Roman",serif' }}>Сайт – </span>
-            <a href='https://delimobil.ru'>
+            <a href='https://motosoul.ru'>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>https</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>://</span>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>delimobil</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>motosoul</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>.ru</span>
             </a>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>.</span>
@@ -421,7 +421,7 @@ export const Contract = () => {
           </p>
           <p style={{ marginLeft: '35.45pt', textAlign: 'justify' }}>
             <u>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>- Договор Делимобиль (настоящий Договор);</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>- Договор MotoSoul (настоящий Договор);</span>
             </u>
           </p>
           <p style={{ marginLeft: '35.45pt', textAlign: 'justify' }}>
@@ -709,7 +709,7 @@ export const Contract = () => {
             {/*[endif]*/}
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
               Использование функционала Мобильного приложения может быть ограничено в случаях наличия задолженности Пользователя перед Компанией либо когда использование определенного функционала при
-              данных обстоятельствах может привести к причинению вреда жизни или здоровью людей, повреждению имущества, нарушению требований действующего законодательства, условий Договора Делимобиль,
+              данных обстоятельствах может привести к причинению вреда жизни или здоровью людей, повреждению имущества, нарушению требований действующего законодательства, условий Договора MotoSoul,
               Договора аренды ТС и иных документов об использовании Сервиса.
             </span>
           </p>
@@ -1180,7 +1180,7 @@ export const Contract = () => {
             <span style={{ fontFamily: '"Times New Roman",serif' }}>4.10.&nbsp;&nbsp;&nbsp; </span>
             {/*[endif]*/}
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
-              В случае принятия Компанией решения о возможности заключения Договора Делимобиль, Компания извещает Пользователя об этом через Мобильное приложение. Одновременно с извещением Компания
+              В случае принятия Компанией решения о возможности заключения Договора MotoSoul, Компания извещает Пользователя об этом через Мобильное приложение. Одновременно с извещением Компания
               предоставляет Пользователю в Мобильном приложении текст настоящего Договора для ознакомления. Для присоединения к Договору Пользователь нажимает соответствующие активные клавиши в
               Мобильном приложении («Подписать»). После электронного подписания Договора Компания осуществляет Активацию Пользователя в Сервисе.
             </span>
@@ -1573,7 +1573,7 @@ export const Contract = () => {
             {/*[if !supportLists]*/}
             <span style={{ fontFamily: 'Symbol' }}>·&nbsp;&nbsp;&nbsp;&nbsp; </span>
             {/*[endif]*/}
-            <span style={{ color: 'black' }}>в случае нарушения Пользователем условий Договора Делимобиль, Договора аренды ТС и документов об использовании Сервиса;</span>
+            <span style={{ color: 'black' }}>в случае нарушения Пользователем условий Договора MotoSoul, Договора аренды ТС и документов об использовании Сервиса;</span>
           </p>
           <p style={{ marginLeft: '0cm', textAlign: 'justify' }}>
             {/*[if !supportLists]*/}
@@ -2180,10 +2180,10 @@ export const Contract = () => {
               Отказ от Договора по инициативе Пользователя осуществляется на основании заявления, оформленного в соответствии с Приложением № 1 к Договору. Скан-версия заявления передается
               Пользователем Компании по электронной почте на адрес{' '}
             </span>
-            <a href='mailto:info@delimobil.ru'>
+            <a href='mailto:info@motosoul.ru'>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>info</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>@</span>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>delimobil</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>motosoul</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>.</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>ru</span>
             </a>
@@ -2201,7 +2201,7 @@ export const Contract = () => {
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
               Если односторонний отказ Компании от Договора не запрещен действующим законодательством, при отказе Компании от Договора таковой прекращается в момент получения Пользователем уведомления
-              об отказе от Договора (ст. 165.1 ГК РФ) и/или направленного в виде уведомления посредством Мобильного приложения Делимобиль; отображения информации в Личном кабинете; отправки Компанией
+              об отказе от Договора (ст. 165.1 ГК РФ) и/или направленного в виде уведомления посредством Мобильного приложения MotoSoul; отображения информации в Личном кабинете; отправки Компанией
               SMS-сообщения или посредством электронной почты (по наиболее раннему событию).
             </span>
           </p>
@@ -2451,7 +2451,7 @@ export const Contract = () => {
             <span style={{ fontFamily: '"Times New Roman",serif' }}>т.ч.</span>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
               {' '}
-              касающихся исполнения Договора Делимобиль, Договора аренды ТС, услуг Компании и статуса регистрации в Сервисе (<u>за исключением рекламных сообщений)</u> посредством:
+              касающихся исполнения Договора MotoSoul, Договора аренды ТС, услуг Компании и статуса регистрации в Сервисе (<u>за исключением рекламных сообщений)</u> посредством:
             </span>
           </p>
           <p style={{ textAlign: 'justify' }}>
@@ -2472,10 +2472,10 @@ export const Contract = () => {
           </p>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>В целях отказа от информирования Пользователь может направить Компании сообщение на </span>
-            <a href='mailto:info@delimobil.ru'>
+            <a href='mailto:info@motosoul.ru'>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>info</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>@</span>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>delimobil</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>motosoul</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>.</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>ru</span>
             </a>
@@ -2483,13 +2483,13 @@ export const Contract = () => {
               {' '}
               об отказе <u>от получения сообщений уведомительного характера</u>. При получении отказа от информирования Компания исключает Пользователя из рассылки информационных сообщений, за
               исключением тех сообщений, для направления которых действующее законодательство не предусматривает необходимость получения согласия Пользователя. При этом Пользователь осознает, что
-              предоставление Сервиса без получения уведомлений, связанных с исполнением Договора Делимобиль, Договора аренды ТС, может оказаться невозможным.
+              предоставление Сервиса без получения уведомлений, связанных с исполнением Договора MotoSoul, Договора аренды ТС, может оказаться невозможным.
             </span>
           </p>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
               Пользователь признает и соглашается с тем, что при прекращении оснований для направления информационных сообщений уведомительного характера Компании требуется до 24 часов для исключения
-              Пользователя из списка адресатов информационных сообщений уведомительного характера, что обусловлено технической составляющей организации сервиса «Делимобиль». Направление Пользователю в
+              Пользователя из списка адресатов информационных сообщений уведомительного характера, что обусловлено технической составляющей организации сервиса «MotoSoul». Направление Пользователю в
               указанный период информационных сообщений уведомительного характера Стороны не рассматривают как нарушение прав Пользователя.
             </span>
           </p>
@@ -2605,12 +2605,12 @@ export const Contract = () => {
           </table>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
-              Присоединился (ст. 428 ГК РФ). Документы (в т.ч. формы) подписаны&nbsp;Арендатором (Поверенным) электронной подписью в соответствии с Договором Делимобиль (
+              Присоединился (ст. 428 ГК РФ). Документы (в т.ч. формы) подписаны&nbsp;Арендатором (Поверенным) электронной подписью в соответствии с Договором MotoSoul (
             </span>
-            <a href='https://delimobil.ru/terms/contract'>
+            <a href='https://motosoul.ru/terms/contract'>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>https</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>://</span>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>delimobil</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>motosoul</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>.</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>ru</span>
               <span style={{ fontFamily: '"Times New Roman",serif' }}>/</span>
@@ -2762,7 +2762,7 @@ export const Contract = () => {
           </p>
           <p style={{ marginLeft: '276.45pt', textAlign: 'justify' }}>
             <strong>
-              <span style={{ fontFamily: '"Times New Roman",serif' }}>Приложение № 1 к Договору Делимобиль</span>
+              <span style={{ fontFamily: '"Times New Roman",serif' }}>Приложение № 1 к Договору MotoSoul</span>
             </strong>
           </p>
           <p style={{ textAlign: 'justify' }}>
@@ -2861,7 +2861,7 @@ export const Contract = () => {
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
               Уведомляю Общество с ограниченной ответственностью «Каршеринг Руссия» (<span style={{ color: 'black' }}>ИНН </span>9705034527, ОГРН{' '}
-              <span style={{ color: '#1a1a1a' }}>1157746288083) </span>(далее – ООО «Каршеринг Руссия») об отказе от Договора Делимобиль) с «___» ___________ 20__ г.
+              <span style={{ color: '#1a1a1a' }}>1157746288083) </span>(далее – ООО «Каршеринг Руссия») об отказе от Договора MotoSoul) с «___» ___________ 20__ г.
             </span>
           </p>
           <p style={{ textAlign: 'justify' }}>
@@ -2923,12 +2923,12 @@ export const Contract = () => {
           </p>
           <p style={{ textAlign: 'justify' }}>
             <span style={{ fontFamily: '"Times New Roman",serif' }}>
-              Присоединился (ст. 428 ГК РФ). Документы (в т.ч. формы) подписаны&nbsp;Пользователем (Поверенным) электронной подписью в соответствии с Договором Делимобиль (
+              Присоединился (ст. 428 ГК РФ). Документы (в т.ч. формы) подписаны&nbsp;Пользователем (Поверенным) электронной подписью в соответствии с Договором MotoSoul (
             </span>
-            <a href='https://delimobil.ru/terms/contract'>
+            <a href='https://motosoul.ru/terms/contract'>
               <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>https</span>
               <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>://</span>
-              <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>delimobil</span>
+              <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>motosoul</span>
               <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>.</span>
               <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>ru</span>
               <span style={{ fontFamily: '"Times New Roman",serif', fontSize: '10.5pt' }}>/</span>
