@@ -52,10 +52,10 @@ export const RacePage = () => {
         <header className='header'>
           <div
             onClick={() => {
-              if(location.state !== undefined){
+              if (location.state !== undefined) {
                 history.push({
                   pathname: '/newtrip',
-                  state: location.state
+                  state: location.state.chosen,
                 })
               } else history.goBack()
             }}>
@@ -95,8 +95,14 @@ export const RacePage = () => {
             </div>
             <div className='race__text'>Подпись</div>
           </div>
-          <img style={{ width: '12%' }}  src={race.ownerSignature} alt='' />
+          <img style={{ width: '12%' }} src={race.ownerSignature} alt='' />
         </div>
+
+        {!race.status && (
+          <button className='race__btn' onClick={() => history.push('/main', [...location.state.chosen, String(new Date()), location.state.userSignature, location.state.currentRaceId])}>
+            Подтведить
+          </button>
+        )}
       </div>
     )
   }

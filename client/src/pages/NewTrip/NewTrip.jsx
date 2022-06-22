@@ -46,8 +46,6 @@ export const NewTrip = () => {
 
   const [chosen, setChosen] = useState(locationState.state !== undefined ? locationState.state : [])
 
-  console.log(chosen);
-
   const [cardInfo, setCardInfo] = useState(undefined)
   const [validCard, setValidCard] = useState(false)
 
@@ -805,19 +803,23 @@ export const NewTrip = () => {
                 value={`http://169.254.74.120:3000/race/${currentRaceId}`}
               />
 
-              <Link to={{
-                pathname: `/race/${currentRaceId}`,
-                state: chosen
-              }} className='qrcode__link'>Прочитать QR-код</Link>
+              <Link
+                to={{
+                  pathname: `/race/${currentRaceId}`,
+                  state: { chosen, userSignature, currentRaceId },
+                }}
+                className='qrcode__link'>
+                Прочитать QR-код
+              </Link>
               <iframe
                 src='https://yandex.ru/map-widget/v1/?um=constructor%3Abefc8633814c2e8e4a8758b8675eba77d157dd3318938640f7f8bd1eec612a9d&amp;source=constructor'
                 width='100%'
                 height='200'
                 frameborder='0'></iframe>
             </div>
-            <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature, currentRaceId])}>
+            {/* <button className='canvas__btn' onClick={() => history.push('/main', [...chosen, String(new Date()), userSignature, currentRaceId])}>
               Начать поездку
-            </button>
+            </button> */}
           </>
         )}
 
